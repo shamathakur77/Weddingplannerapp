@@ -151,38 +151,6 @@ body.lang-hi .wtext,body.lang-mr .wtext{ font-family:'Noto Serif Devanagari',ser
 .wreact-pill{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px;border-radius:14px;border:1px solid rgba(212,168,67,.25);background:none;font-family:inherit;font-size:12px;color:var(--muted);cursor:pointer;line-height:1;}
 .wreact-pill.active{background:rgba(224,160,48,.22);border-color:var(--gold);color:var(--gold-bright);}
 .wreact-pill .rcount{font-size:10px;}
-/* ===== RSVP ===== */
-.rsvp-summary{display:flex;gap:6px;flex-wrap:wrap;padding:11px 12px;background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:14px;}
-.rsvp-stat{flex:1;min-width:60px;text-align:center;font-size:10px;color:var(--muted);}
-.rsvp-stat .rs-num{font-family:'Fraunces',serif;font-size:22px;font-weight:700;display:block;}
-.rsvp-stat.st-confirmed .rs-num{color:var(--teal);}
-.rsvp-stat.st-pending .rs-num{color:var(--gold);}
-.rsvp-stat.st-declined .rs-num{color:var(--muted);}
-.rsvp-stat.st-total .rs-num{color:var(--ink);}
-.rsvp-add{display:flex;gap:8px;margin-bottom:12px;}
-.rsvp-add input{flex:1;border:1px solid var(--line);border-radius:11px;padding:11px;font-family:inherit;font-size:14px;background:rgba(0,0,0,.2);color:var(--ink);}
-.rsvp-add input::placeholder{color:var(--muted);}
-.rsvp-add input:focus{outline:none;border-color:var(--teal);}
-.rsvp-add button{background:var(--teal);color:#0d1a18;border:none;border-radius:11px;padding:0 18px;font-size:20px;font-weight:700;min-width:52px;}
-.rsvp-card{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:10px;overflow:hidden;}
-.rsvp-card-head{display:flex;align-items:center;gap:10px;padding:12px 14px;cursor:pointer;}
-.rsvp-card-head .rc-name{flex:1;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:700;color:var(--ink);}
-body.lang-hi .rsvp-card-head .rc-name,body.lang-mr .rsvp-card-head .rc-name{font-family:'Noto Serif Devanagari',serif;}
-.rc-status{font-size:10px;padding:5px 11px;border-radius:12px;border:none;cursor:pointer;font-family:inherit;}
-.rc-status.st-pending{background:rgba(224,160,48,.18);color:var(--gold);}
-.rc-status.st-confirmed{background:rgba(95,168,156,.2);color:var(--teal);}
-.rc-status.st-declined{background:rgba(154,138,112,.18);color:var(--muted);}
-.rsvp-card-body{padding:0 14px 13px;display:none;}
-.rsvp-card.open .rsvp-card-body{display:block;}
-.rc-pills{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.rc-pill{border:1px solid var(--line);border-radius:18px;padding:6px 13px;font-size:11px;color:var(--muted);background:none;cursor:pointer;}
-.rc-pill.on{border-color:var(--gold);color:var(--gold-bright);background:rgba(224,160,48,.12);}
-.rc-fam{display:flex;gap:7px;align-items:center;flex-wrap:wrap;}
-.rc-fam button{border-radius:18px;padding:5px 13px;font-size:10px;border:1.5px solid var(--line);background:none;color:var(--muted);cursor:pointer;}
-.rc-fam button.on-roma{border-color:var(--p-roma);color:var(--p-roma);background:rgba(95,168,156,.12);}
-.rc-fam button.on-prashant{border-color:var(--p-pfam);color:var(--p-pfam);background:rgba(232,165,95,.12);}
-.rc-del{background:none;border:none;color:var(--muted);font-size:18px;cursor:pointer;padding:0 4px;opacity:.5;}
-.rc-del:hover{opacity:1;}
 /* soul */
 .soul-intro{ text-align:center; padding:18px 6px;}
 .soul-em{ font-size:26px; color:var(--gold); margin-bottom:4px;}
@@ -284,14 +252,6 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
     <div class="addrow"><input id="newTodo" maxlength="120"><button onclick="addTodo()">+</button></div>
     <div id="todoList"></div>
   </section>
-  <section class="panel" id="rsvp">
-    <div class="rsvp-summary" id="rsvpSummary"></div>
-    <div class="rsvp-add">
-      <input id="rsvpName" placeholder="Guest name…" />
-      <button onclick="addGuest()">＋</button>
-    </div>
-    <div id="rsvpList"></div>
-  </section>
   <section class="panel" id="budget">
     <div class="addrow"><input id="bCat" maxlength="40" style="flex:2;"><input id="bAmt" maxlength="12" inputmode="numeric" style="flex:1.3;"><button onclick="addBudget()">+</button></div>
     <div class="card"><div id="budgetList"></div><div class="budget-total"><span data-t="totalPlanned">Total planned</span><span id="bTotal">₹0</span></div></div>
@@ -308,7 +268,6 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
   <button data-tab="decisions" onclick="show('decisions',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg><span data-t="t_decisions">Decisions</span></button>
   <button data-tab="vendors" onclick="show('vendors',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg><span data-t="t_vendors">Vendors</span></button>
   <button data-tab="tracker" onclick="show('tracker',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span data-t="t_tracker">Tracker</span></button>
-  <button data-tab="rsvp" onclick="show('rsvp',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20M7 15h2M13 15h4"/></svg><span>🎟️</span></button>
   <button data-tab="budget" onclick="show('budget',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span data-t="t_budget">Budget</span></button>
   <button data-tab="soul" onclick="show('soul',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21l-4.9-2.8.9-5.5-4-3.9 5.5-.8z"/></svg><span data-t="t_soul">Soul</span></button>
   <button data-tab="story" onclick="show('story',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="3" width="8" height="8" rx="1"/><rect x="13" y="3" width="8" height="5" rx="1"/><rect x="13" y="11" width="8" height="10" rx="1"/><rect x="3" y="14" width="8" height="7" rx="1"/></svg><span>Story</span></button>
@@ -399,7 +358,7 @@ let lang=localStorage.getItem('wp_lang')||'en';
 let me=localStorage.getItem('wp_me')||null;
 let sb=null,online=false;
 let STATE=JSON.parse(localStorage.getItem('wp_state')||'{}');
-STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];STATE.wishes=STATE.wishes||[];STATE.rsvp=STATE.rsvp||[];
+STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];STATE.wishes=STATE.wishes||[];
 function saveLocal(){ localStorage.setItem('wp_state',JSON.stringify(STATE)); }
 
 function ownerPill(o){ const color=OWNER_COLOR[o]||"var(--p-all)"; const map={ROMAFAM:"RomaFam",PRASHANTFAM:"PrashantFam",ALL:"ALL"};
@@ -482,7 +441,7 @@ function renderBudget(){ const l=document.getElementById('budgetList'); let tota
   l.innerHTML=STATE.budget.length?STATE.budget.map((b,i)=>{ total+=Number(b.amt)||0; return `<div class="brow"><div class="bcat">${b.cat}</div><div class="bamt">₹${Number(b.amt).toLocaleString('en-IN')}</div><button class="vstatus s-wait" onclick="delBudget(${i})">✕</button></div>`;}).join(''):`<div class="empty">${T[lang].budgetEmpty}</div>`;
   document.getElementById('bTotal').textContent='₹'+total.toLocaleString('en-IN'); }
 
-function renderAll(){ renderPlanner();renderDecisions();renderVendors();renderTodos();renderBudget();renderWishes();renderSoul();renderRsvp(); }
+function renderAll(){ renderPlanner();renderDecisions();renderVendors();renderTodos();renderBudget();renderWishes();renderSoul(); }
 
 /* ---- wishes wall ---- */
 const REACTIONS=['🌸','🙏','❤️'];
@@ -504,63 +463,6 @@ function renderWishes(){ const l=document.getElementById('wishList'); if(!l)retu
       return `<button class="wreact-pill${active?' active':''}" onclick="toggleReaction(${i},'${e}')"><span>${e}</span><span class="rcount">${voters.length||''}</span></button>`;}).join('');
     return `<div class="wish" style="border-left:3px solid ${color}"><div class="wtext">"${w.text}"</div><div class="wby" style="color:${color}">— ${lab}</div><div class="wreact-row">${pills}</div></div>`;}).join(''); }
 function addWish(){ const el=document.getElementById('newWish'),t=el.value.trim(); if(!t)return; STATE.wishes.unshift({text:t,by:me||'',reactions:{}}); el.value=''; commit(); renderWishes(); }
-// ===== RSVP =====
-const RSVP_T={
-  en:{pending:'Pending',confirmed:'Confirmed',declined:'Declined',nashik:'\u{1F33F} Nashik Events',bharatpur:'\u{1F338} Bharatpur Events',both:'\u{1F389} Both',veg:'\u{1F957} Vegetarian',roma:'Roma Family',prashant:'Prashant Family',total:'Total Guests'},
-  hi:{pending:'\u092a\u094d\u0930\u0924\u0940\u0915\u094d\u0937\u093f\u0924',confirmed:'\u092a\u0941\u0937\u094d\u091f\u093f',declined:'\u0905\u0938\u094d\u0935\u0940\u0915\u093e\u0930',nashik:'\u{1F33F} \u0928\u093e\u0936\u093f\u0915 \u0915\u093e\u0930\u094d\u092f\u0915\u094d\u0930\u092e',bharatpur:'\u{1F338} \u092d\u0930\u0924\u092a\u0941\u0930 \u0915\u093e\u0930\u094d\u092f\u0915\u094d\u0930\u092e',both:'\u{1F389} \u0926\u094b\u0928\u094b\u0902',veg:'\u{1F957} \u0936\u093e\u0915\u093e\u0939\u093e\u0930\u0940',roma:'\u0930\u094b\u092e\u093e \u092a\u0930\u093f\u0935\u093e\u0930',prashant:'\u092a\u094d\u0930\u0936\u093e\u0902\u0924 \u092a\u0930\u093f\u0935\u093e\u0930',total:'\u0915\u0941\u0932 \u0905\u0924\u093f\u0925\u093f'},
-  mr:{pending:'\u092a\u094d\u0930\u0924\u0940\u0915\u094d\u0937\u093f\u0924',confirmed:'\u092a\u0941\u0937\u094d\u091f\u093f',declined:'\u0928\u0915\u093e\u0930',nashik:'\u{1F33F} \u0928\u093e\u0936\u093f\u0915 \u0915\u093e\u0930\u094d\u092f\u0915\u094d\u0930\u092e',bharatpur:'\u{1F338} \u092d\u0930\u0924\u092a\u0942\u0930 \u0915\u093e\u0930\u094d\u092f\u0915\u094d\u0930\u092e',both:'\u{1F389} \u0926\u094b\u0928\u094d\u0939\u0940',veg:'\u{1F957} \u0936\u093e\u0915\u093e\u0939\u093e\u0930\u0940',roma:'\u0930\u094b\u092e\u093e \u0915\u0941\u091f\u0941\u0902\u092c',prashant:'\u092a\u094d\u0930\u0936\u093e\u0902\u0924 \u0915\u0941\u091f\u0941\u0902\u092c',total:'\u090f\u0915\u0942\u0923 \u092a\u093e\u0939\u0941\u0923\u0947'},
-};
-function rsvpT(k){return(RSVP_T[lang]||RSVP_T.en)[k]||k;}
-function addGuest(){const el=document.getElementById('rsvpName');const name=el.value.trim();if(!name)return;if(!STATE.rsvp)STATE.rsvp=[];STATE.rsvp.push({id:Date.now(),name,events:'both',status:'pending',family:'roma',veg:false});el.value='';commit();renderRsvp();}
-function cycleRsvpStatus(id){const g=STATE.rsvp.find(x=>x.id===id);if(!g)return;const cycle={pending:'confirmed',confirmed:'declined',declined:'pending'};g.status=cycle[g.status]||'pending';commit();renderRsvp();}
-function toggleRsvpEvent(id,val){const g=STATE.rsvp.find(x=>x.id===id);if(!g)return;if(val==='both'){g.events='both';}else{g.events=(g.events===val)?'both':val;}commit();renderRsvp();}
-function toggleRsvpFamily(id,val){const g=STATE.rsvp.find(x=>x.id===id);if(!g)return;g.family=val;commit();renderRsvp();}
-function toggleRsvpVeg(id){const g=STATE.rsvp.find(x=>x.id===id);if(!g)return;g.veg=!g.veg;commit();renderRsvp();}
-function toggleRsvpCard(id){const el=document.getElementById('rc-'+id);if(el)el.classList.toggle('open');}
-function deleteGuest(id){STATE.rsvp=STATE.rsvp.filter(x=>x.id!==id);commit();renderRsvp();}
-function renderRsvp(){
-  if(!STATE.rsvp)STATE.rsvp=[];
-  const el=document.getElementById('rsvpList');if(!el)return;
-  const confirmed=STATE.rsvp.filter(g=>g.status==='confirmed').length;
-  const pending=STATE.rsvp.filter(g=>g.status==='pending').length;
-  const declined=STATE.rsvp.filter(g=>g.status==='declined').length;
-  const total=STATE.rsvp.length;
-  const sm=document.getElementById('rsvpSummary');
-  if(sm)sm.innerHTML=
-    '<div class="rsvp-stat st-confirmed"><span class="rs-num">'+confirmed+'</span>'+rsvpT('confirmed')+'</div>'+
-    '<div class="rsvp-stat st-pending"><span class="rs-num">'+pending+'</span>'+rsvpT('pending')+'</div>'+
-    '<div class="rsvp-stat st-declined"><span class="rs-num">'+declined+'</span>'+rsvpT('declined')+'</div>'+
-    '<div class="rsvp-stat st-total"><span class="rs-num">'+total+'</span>'+rsvpT('total')+'</div>';
-  if(!total){el.innerHTML='<div class="empty">'+(lang==='hi'?'\u0905\u092d\u0940 \u0915\u094b\u0908 \u0905\u0924\u093f\u0925\u093f \u0928\u0939\u0940\u0902':lang==='mr'?'\u0905\u0926\u094d\u092f\u093e\u092a \u092a\u093e\u0939\u0941\u0923\u0947 \u0928\u093e\u0939\u0940\u0924':'No guests yet. Add the first one above.')+'</div>';return;}
-  el.innerHTML=STATE.rsvp.map(function(g){
-    var stCls='st-'+g.status;
-    var stLabel={pending:rsvpT('pending'),confirmed:rsvpT('confirmed'),declined:rsvpT('declined')}[g.status]||g.status;
-    var nashikOn=(g.events==='nashik'||g.events==='both');
-    var bharOn=(g.events==='bharatpur'||g.events==='both');
-    return '<div class="rsvp-card" id="rc-'+g.id+'">'+
-      '<div class="rsvp-card-head" onclick="toggleRsvpCard('+g.id+')">'+
-        '<span class="rc-name">'+g.name+'</span>'+
-        '<button class="rc-status '+stCls+'" onclick="event.stopPropagation();cycleRsvpStatus('+g.id+')">'+stLabel+'</button>'+
-        '<button class="rc-del" onclick="event.stopPropagation();deleteGuest('+g.id+')">&#x2715;</button>'+
-      '</div>'+
-      '<div class="rsvp-card-body">'+
-        '<div class="rc-pills">'+
-          '<button class="rc-pill'+(nashikOn?' on':'')+'" onclick="toggleRsvpEvent('+g.id+','nashik')">'+rsvpT('nashik')+'</button>'+
-          '<button class="rc-pill'+(bharOn?' on':'')+'" onclick="toggleRsvpEvent('+g.id+','bharatpur')">'+rsvpT('bharatpur')+'</button>'+
-          '<button class="rc-pill'+(g.events==='both'?' on':'')+'" onclick="toggleRsvpEvent('+g.id+','both')">'+rsvpT('both')+'</button>'+
-        '</div>'+
-        '<div class="rc-fam">'+
-          '<button class="'+(g.family==='roma'?'on-roma':'')+'" onclick="toggleRsvpFamily('+g.id+','roma')">'+rsvpT('roma')+'</button>'+
-          '<button class="'+(g.family==='prashant'?'on-prashant':'')+'" onclick="toggleRsvpFamily('+g.id+','prashant')">'+rsvpT('prashant')+'</button>'+
-          '<button class="rc-pill'+(g.veg?' on':'')+'" style="margin-left:auto" onclick="toggleRsvpVeg('+g.id+')">'+rsvpT('veg')+'</button>'+
-        '</div>'+
-      '</div>'+
-    '</div>';
-  }).join('');
-  const ri=document.getElementById('rsvpName');if(ri)ri.placeholder=(lang==='hi'?'\u0905\u0924\u093f\u0925\u093f \u0915\u093e \u0928\u093e\u092e…':lang==='mr'?'\u092a\u093e\u0939\u0941\u0923\u094d\u092f\u093e\u091a\u0947 \u0928\u093e\u0935…':'Guest name…');
-}
-document.addEventListener('keydown',function(e){if(document.activeElement&&document.activeElement.id==='rsvpName'&&e.key==='Enter')addGuest();});
-
 
 /* ---- family split / venn (rendered into decisions top) ---- */
 function familySplitHTML(){
@@ -688,7 +590,7 @@ async function commit(){ saveLocal(); if(!online)return;
 async function initCloud(){ const dot=document.getElementById('syncDot'),txt=document.getElementById('syncTxt');
   try{ sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
     const {data}=await sb.from('wedding').select('data').eq('code',WEDDING_CODE).maybeSingle();
-    if(data&&data.data){ STATE=data.data; STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];STATE.wishes=STATE.wishes||[];STATE.rsvp=STATE.rsvp||[]; saveLocal(); renderAll(); }
+    if(data&&data.data){ STATE=data.data; STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];STATE.wishes=STATE.wishes||[]; saveLocal(); renderAll(); }
     else { await sb.from('wedding').upsert({code:WEDDING_CODE,data:STATE,updated:new Date().toISOString()}); }
     online=true; dot.className='dot on'; txt.textContent='live · synced';
     sb.channel('wp').on('postgres_changes',{event:'*',schema:'public',table:'wedding',filter:`code=eq.${WEDDING_CODE}`},p=>{ if(p.new&&p.new.data){ STATE=p.new.data; saveLocal(); renderAll(); }}).subscribe();
