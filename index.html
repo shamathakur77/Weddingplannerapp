@@ -13,7 +13,6 @@
   --ink:#f4e8cf; --rust:#e8a55f; --teal:#5fa89c; --muted:#9a8a70;
   --line:rgba(224,160,48,.24); --card:rgba(255,250,235,.065);
   --p-roma:#5fa89c; --p-pfam:#e8a55f; --p-all:#e8c869;
-  --p-shama:#5fa89c; --p-mom:#d4a843; --p-prashant:#c77dff;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
@@ -52,6 +51,19 @@ body.lang-hi h1,body.lang-mr h1{ font-family:'Noto Serif Devanagari',serif;}
 h1 .amp{ color:var(--gold); font-style:italic;}
 .sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px; color:#cBae7a;}
 body.lang-hi .sub,body.lang-mr .sub{ font-family:'Noto Serif Devanagari',serif; font-style:normal;}
+.countdown{ margin-top:8px; font-size:11px; color:var(--gold-bright); letter-spacing:1px;}
+.countdown .cd-num{ font-family:'Fraunces',serif; font-size:19px; font-weight:700; color:var(--gold); vertical-align:-2px;}
+.pstrip{ display:flex; justify-content:space-between; gap:4px; padding:6px 4px 12px; margin-bottom:4px; overflow-x:auto;}
+.pring{ display:flex; flex-direction:column; align-items:center; gap:3px; flex:1; min-width:46px;}
+.pring span{ font-size:9px; color:var(--muted); letter-spacing:.5px;}
+.burst{ position:fixed; z-index:60; pointer-events:none; animation:burstUp 2.4s ease-out forwards;}
+@keyframes burstUp{ 0%{transform:translateY(0) scale(.4);opacity:0;} 12%{opacity:1;transform:translateY(-40px) scale(1);} 100%{transform:translateY(60vh) rotate(360deg);opacity:0;} }
+.celebrate-toast{ position:fixed; top:34%; left:50%; transform:translateX(-50%); z-index:70;
+  background:linear-gradient(135deg,#5a2e1e,#1e3329); border:1px solid var(--gold); color:var(--gold-bright);
+  font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:700; padding:12px 22px; border-radius:14px;
+  box-shadow:0 8px 30px rgba(0,0,0,.4); animation:toastPop 2.6s ease forwards; white-space:nowrap;}
+body.lang-hi .celebrate-toast,body.lang-mr .celebrate-toast{ font-family:'Noto Serif Devanagari',serif;}
+@keyframes toastPop{ 0%{opacity:0;transform:translateX(-50%) scale(.7);} 12%,80%{opacity:1;transform:translateX(-50%) scale(1);} 100%{opacity:0;transform:translateX(-50%) scale(.95);} }
 .controls{ display:flex; gap:8px; justify-content:center; align-items:center; margin-top:10px; flex-wrap:wrap;}
 .lang-switch{ display:inline-flex; gap:3px; background:rgba(0,0,0,.2); border-radius:14px; padding:3px;}
 .lang-switch button{ background:none; border:none; color:var(--muted); font-family:inherit; font-size:10px; padding:4px 9px; border-radius:11px;}
@@ -110,9 +122,36 @@ body.lang-hi .budget-total,body.lang-mr .budget-total{ font-family:'Noto Serif D
 .empty{ text-align:center; color:var(--muted); font-style:italic; font-family:'Cormorant Garamond',serif; padding:24px; font-size:15px;}
 .banner{ background:rgba(217,140,95,.1); border:1px solid rgba(217,140,95,.4); color:#e8b89a; border-radius:12px; padding:11px 13px; font-size:11px; line-height:1.5; margin:10px 0;}
 nav{ position:fixed; bottom:0; left:0; right:0; background:rgba(13,18,16,.82); backdrop-filter:blur(12px); border-top:1px solid var(--line); display:flex; justify-content:space-around; padding:8px 4px calc(8px + env(safe-area-inset-bottom)); z-index:50;}
-nav button{ background:none;border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--muted); font-family:inherit; font-size:8.5px; padding:4px 5px; flex:1;}
+nav button{ background:none;border:none; display:flex; flex-direction:column; align-items:center; gap:2px; color:var(--muted); font-family:inherit; font-size:7.5px; padding:4px 2px; flex:1;}
 nav button.active{ color:var(--gold);}
-nav button svg{ width:20px;height:20px; stroke:currentColor;}
+nav button svg{ width:18px;height:18px; stroke:currentColor;}
+/* venn / family split */
+.venn{ display:flex; align-items:center; justify-content:center; gap:0; margin:6px 0 10px;}
+.venn .vc,.venn .vshared{ text-align:center; border-radius:50%; width:96px; height:96px; display:flex; flex-direction:column; align-items:center; justify-content:center;}
+.venn .vc{ background:color-mix(in srgb, var(--c) 20%, transparent); border:1.5px solid var(--c);}
+.venn .vc:first-child{ margin-right:-22px;} .venn .vc:last-child{ margin-left:-22px;}
+.venn .vshared{ background:rgba(224,160,48,.16); border:1.5px solid var(--gold); width:80px; height:80px; z-index:2;}
+.venn .vcount{ font-family:'Fraunces',serif; font-size:22px; font-weight:700; color:var(--ink);}
+.venn .vlab{ font-size:8px; color:var(--muted); padding:0 4px; line-height:1.2;}
+.tree-hint{ text-align:center; font-size:9px; color:var(--muted); letter-spacing:1px; margin-bottom:8px;}
+/* wishes */
+.wish{ background:var(--card); border-radius:12px; padding:11px 13px; margin-bottom:9px;}
+.wtext{ font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:var(--ink); line-height:1.4;}
+body.lang-hi .wtext,body.lang-mr .wtext{ font-family:'Noto Serif Devanagari',serif; font-style:normal;}
+.wby{ font-size:10px; margin-top:5px; text-align:right;}
+/* soul */
+.soul-intro{ text-align:center; padding:18px 6px;}
+.soul-em{ font-size:26px; color:var(--gold); margin-bottom:4px;}
+.soul-intro h2{ font-size:25px; color:var(--gold-bright); margin:0 0 12px;}
+.soul-intro p{ font-size:12px; line-height:1.6; color:var(--ink); margin:0 auto 12px; max-width:340px;}
+.soul-wait{ color:var(--rust)!important;}
+.soul-note{ font-size:10.5px!important; color:var(--muted)!important; font-style:italic;}
+.soul-section{ background:var(--card); border:1px solid var(--line); border-radius:14px; padding:14px 16px; margin-bottom:12px;}
+.soul-section h3{ font-family:'Cormorant Garamond',serif; color:var(--gold); font-size:18px; margin:0 0 4px;}
+body.lang-hi .soul-section h3,body.lang-mr .soul-section h3{ font-family:'Noto Serif Devanagari',serif;}
+.soul-section .sys{ font-size:8px; letter-spacing:1.5px; color:var(--teal); margin-bottom:6px;}
+.soul-section p{ font-size:12px; line-height:1.55; margin:0 0 8px;}
+.soul-section .use{ background:rgba(95,168,156,.1); border-left:2px solid var(--teal); padding:7px 10px; border-radius:6px; font-size:11px; color:#bfe0d8;}
 .modal{ position:fixed; inset:0; background:rgba(10,14,12,.7); display:flex; align-items:center; justify-content:center; z-index:100; padding:24px;}
 .modal.hide{ display:none;}
 .mbox{ background:#1b2724; border-radius:20px; padding:26px 24px; max-width:340px; width:100%; text-align:center; border:1px solid var(--gold);}
@@ -135,6 +174,7 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
   <div class="kicker" data-t="kicker">A MEETING OF TWO HOMES</div>
   <h1 class="disp">Roma <span class="amp">&amp;</span> Prashant</h1>
   <div class="sub" data-t="sub">Nashik · Bharatpur · November</div>
+  <div class="countdown" id="countdown"></div>
   <div class="controls">
     <div class="lang-switch">
       <button data-l="en" class="on" onclick="setLang('en')">EN</button>
@@ -147,7 +187,7 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
 </header>
 <main>
   <div id="cfgBanner" class="banner" style="display:none;"></div>
-  <section class="panel active" id="planner"></section>
+  <section class="panel active" id="planner"><div id="progressStrip"></div><div id="plannerBody"></div></section>
   <section class="panel" id="decisions"></section>
   <section class="panel" id="vendors"></section>
   <section class="panel" id="tracker">
@@ -158,6 +198,11 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
     <div class="addrow"><input id="bCat" maxlength="40" style="flex:2;"><input id="bAmt" maxlength="12" inputmode="numeric" style="flex:1.3;"><button onclick="addBudget()">+</button></div>
     <div class="card"><div id="budgetList"></div><div class="budget-total"><span data-t="totalPlanned">Total planned</span><span id="bTotal">₹0</span></div></div>
   </section>
+  <section class="panel" id="soul"></section>
+  <section class="panel" id="wishes">
+    <div class="addrow"><input id="newWish" maxlength="160"><button onclick="addWish()">+</button></div>
+    <div id="wishList"></div>
+  </section>
 </main>
 <nav>
   <button data-tab="planner" class="active" onclick="show('planner',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span data-t="t_planner">Planner</span></button>
@@ -165,6 +210,8 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
   <button data-tab="vendors" onclick="show('vendors',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg><span data-t="t_vendors">Vendors</span></button>
   <button data-tab="tracker" onclick="show('tracker',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span data-t="t_tracker">Tracker</span></button>
   <button data-tab="budget" onclick="show('budget',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span data-t="t_budget">Budget</span></button>
+  <button data-tab="soul" onclick="show('soul',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 3l2.5 5 5.5.8-4 3.9.9 5.5L12 21l-4.9-2.8.9-5.5-4-3.9 5.5-.8z"/></svg><span data-t="t_soul">Soul</span></button>
+  <button data-tab="wishes" onclick="show('wishes',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 21s-7-4.5-9.5-9C1 9 2.5 5.5 6 5.5c2 0 3.2 1.2 4 2.5.8-1.3 2-2.5 4-2.5 3.5 0 5 3.5 3.5 6.5C19 16.5 12 21 12 21z"/></svg><span data-t="t_wishes">Wishes</span></button>
 </nav>
 <div class="modal" id="whoModal"><div class="mbox">
   <h3 class="disp" data-t="whoTitle">Who's planning?</h3>
@@ -176,6 +223,9 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
 const SUPABASE_URL = "https://mrbzglbnjwoyxtsmmsud.supabase.co";
 const SUPABASE_ANON_KEY = "sb_publishable_SQdkFvRB6M2FTZ96mZOShQ_Lzd9G7y7";
 const WEDDING_CODE = "roma-prashant-nov";
+/* ---- Change the wedding date here anytime (YYYY, MM-1, DD) ---- */
+const WEDDING_DATE = new Date(2026, 11, 25); // Dec 25 2026 placeholder (month 11 = Dec). Change when fixed.
+/* -------------------------------------------------------------- */
 
 const PEOPLE = {
   RomaFam:{color:"var(--p-roma)",init:"R"},
@@ -185,7 +235,7 @@ const OWNER_COLOR={ROMAFAM:"var(--p-roma)",PRASHANTFAM:"var(--p-pfam)",ALL:"var(
 
 const T={
  en:{kicker:"A MEETING OF TWO HOMES",sub:"Nashik · Bharatpur · November",iam:"I am …",
-  t_planner:"Planner",t_decisions:"Decisions",t_vendors:"Vendors",t_tracker:"Tracker",t_budget:"Budget",
+  t_planner:"Planner",t_decisions:"Decisions",t_vendors:"Vendors",t_tracker:"Tracker",t_budget:"Budget",t_soul:"Soul",t_wishes:"Wishes",addWish:"Add a blessing or wish…",wishEmpty:"No wishes yet. Add the first blessing.",splitTitle:"Who leads what",sharedTitle:"Together",
   totalPlanned:"Total planned",whoTitle:"Who's planning?",whoSub:"Pick your name so your votes and ticks show for everyone. No sign-up.",
   addTodo:"Add a to-do…",bCat:"Category",bAmt:"₹ planned",voteBtn:"vote",voted:"✓ voted",votes:"votes",vote1:"vote",
   vWait:"waiting",vReplied:"replied",vBooked:"booked",
@@ -194,7 +244,7 @@ const T={
   todoEmpty:"No to-dos yet. Add the first one above.",budgetEmpty:"No budget lines yet.",
   people:{RomaFam:"Roma Family",PrashantFam:"Prashant Family"}},
  hi:{kicker:"दो घरों का मिलन",sub:"नासिक · भरतपुर · नवंबर",iam:"मैं हूँ …",
-  t_planner:"योजना",t_decisions:"फ़ैसले",t_vendors:"वेंडर",t_tracker:"ट्रैकर",t_budget:"बजट",
+  t_planner:"योजना",t_decisions:"फ़ैसले",t_vendors:"वेंडर",t_tracker:"ट्रैकर",t_budget:"बजट",t_soul:"आत्मा",t_wishes:"शुभकामनाएँ",addWish:"एक आशीर्वाद या शुभकामना जोड़ें…",wishEmpty:"अभी कोई शुभकामना नहीं. पहला आशीर्वाद जोड़ें.",splitTitle:"कौन क्या संभालता है",sharedTitle:"साथ में",
   totalPlanned:"कुल नियोजित",whoTitle:"कौन योजना बना रहा है?",whoSub:"अपना नाम चुनें ताकि आपके वोट और टिक सबको दिखें. कोई साइन-अप नहीं.",
   addTodo:"एक काम जोड़ें…",bCat:"श्रेणी",bAmt:"₹ नियोजित",voteBtn:"वोट",voted:"✓ वोट दिया",votes:"वोट",vote1:"वोट",
   vWait:"प्रतीक्षा",vReplied:"जवाब आया",vBooked:"बुक हुआ",
@@ -203,7 +253,7 @@ const T={
   todoEmpty:"अभी कोई काम नहीं. ऊपर पहला जोड़ें.",budgetEmpty:"अभी कोई बजट लाइन नहीं.",
   people:{RomaFam:"रोमा परिवार",PrashantFam:"प्रशांत परिवार"}},
  mr:{kicker:"दोन घरांचं मिलन",sub:"नाशिक · भरतपूर · नोव्हेंबर",iam:"मी आहे …",
-  t_planner:"नियोजन",t_decisions:"निर्णय",t_vendors:"वेंडर",t_tracker:"ट्रॅकर",t_budget:"बजेट",
+  t_planner:"नियोजन",t_decisions:"निर्णय",t_vendors:"वेंडर",t_tracker:"ट्रॅकर",t_budget:"बजेट",t_soul:"आत्मा",t_wishes:"शुभेच्छा",addWish:"एक आशीर्वाद किंवा शुभेच्छा जोडा…",wishEmpty:"अजून शुभेच्छा नाहीत. पहिला आशीर्वाद जोडा.",splitTitle:"कोण काय सांभाळतं",sharedTitle:"एकत्र",
   totalPlanned:"एकूण नियोजित",whoTitle:"कोण नियोजन करतंय?",whoSub:"तुमचं नाव निवडा म्हणजे तुमचे मतं व टिक सर्वांना दिसतील. साइन-अप नाही.",
   addTodo:"एक काम जोडा…",bCat:"प्रकार",bAmt:"₹ नियोजित",voteBtn:"मत द्या",voted:"✓ मत दिलं",votes:"मतं",vote1:"मत",
   vWait:"प्रतीक्षा",vReplied:"उत्तर आलं",vBooked:"बुक झालं",
@@ -214,26 +264,26 @@ const T={
 };
 
 const MONTHS={
- en:[{m:"June – July",tag:"LOCK THE BIG DECISIONS",items:[["Confirm wedding + reception dates","ALL"],["Agree rough guest count","ALL"],["Set total budget + split it","ALL"],["Book Shama's flights from Sweden","ROMAFAM"],["Start shared guest list","ROMAFAM"]]},
+ en:[{m:"June – July",tag:"LOCK THE BIG DECISIONS",items:[["Confirm wedding + reception dates","ALL"],["Agree rough guest count","ALL"],["Set total budget + split it","ALL"],["Book overseas family's flights","ROMAFAM"],["Start shared guest list","ROMAFAM"]]},
   {m:"August",tag:"VENUE · CATERING · PLANNER",items:[["Shortlist 3 Nashik venues","ROMAFAM"],["Get written quotes","ROMAFAM"],["Book wedding venue + deposit","ALL"],["Shortlist + book caterer","ROMAFAM"],["Confirm Bharatpur reception with groom's side","PRASHANTFAM"]]},
   {m:"September",tag:"DECOR · INVITES · SHOPPING",items:[["Book decorator + palette","ALL"],["Design + order invites","ROMAFAM"],["Make WhatsApp digital invite","ROMAFAM"],["Buy bride's main outfit + alter","ROMAFAM"],["Buy jewellery + accessories","ROMAFAM"],["Buy return gifts (Tulshibaug)","ROMAFAM"]]},
   {m:"October",tag:"BRIDE PREP · CONFIRM ALL",items:[["Book + trial makeup artist","ROMAFAM"],["Start monthly facials","ROMAFAM"],["Book mehndi + hair","ROMAFAM"],["Re-confirm every vendor","ROMAFAM"],["Confirm photographer","ALL"]]},
   {m:"November",tag:"SEND · FINAL · ENJOY",items:[["Send WhatsApp invites","ROMAFAM"],["Give final headcount","ROMAFAM"],["Collect altered outfits","ROMAFAM"],["Pack bridal day-of kit","ROMAFAM"],["Assign calm day-of point person","ALL"],["Breathe. Enjoy it.","ALL"]]}],
- hi:[{m:"जून – जुलाई",tag:"बड़े फ़ैसले पक्के करें",items:[["शादी + रिसेप्शन की तारीख़ें तय करें","ALL"],["मेहमानों की मोटी संख्या तय करें","ALL"],["कुल बजट तय करें + बाँटें","ALL"],["शमा की स्वीडन से फ़्लाइट बुक करें","ROMAFAM"],["साझा मेहमान सूची शुरू करें","ROMAFAM"]]},
+ hi:[{m:"जून – जुलाई",tag:"बड़े फ़ैसले पक्के करें",items:[["शादी + रिसेप्शन की तारीख़ें तय करें","ALL"],["मेहमानों की मोटी संख्या तय करें","ALL"],["कुल बजट तय करें + बाँटें","ALL"],["विदेश से आने वालों की फ़्लाइट बुक करें","ROMAFAM"],["साझा मेहमान सूची शुरू करें","ROMAFAM"]]},
   {m:"अगस्त",tag:"वेन्यू · कैटरिंग · प्लानर",items:[["नासिक में 3 वेन्यू छाँटें","ROMAFAM"],["लिखित कोटेशन लें","ROMAFAM"],["शादी का वेन्यू बुक करें + अग्रिम","ALL"],["कैटरर छाँटें + बुक करें","ROMAFAM"],["भरतपुर रिसेप्शन दूल्हे पक्ष से तय करें","PRASHANTFAM"]]},
   {m:"सितंबर",tag:"सजावट · निमंत्रण · ख़रीदारी",items:[["डेकोरेटर + रंग बुक करें","ALL"],["निमंत्रण डिज़ाइन + ऑर्डर करें","ROMAFAM"],["व्हाट्सएप डिजिटल निमंत्रण बनाएँ","ROMAFAM"],["दुल्हन का मुख्य पोशाक + अल्टरेशन","ROMAFAM"],["गहने + एक्सेसरीज़ ख़रीदें","ROMAFAM"],["रिटर्न गिफ़्ट (तुलशीबाग)","ROMAFAM"]]},
   {m:"अक्टूबर",tag:"दुल्हन की तैयारी · सब पक्का करें",items:[["मेकअप आर्टिस्ट बुक + ट्रायल","ROMAFAM"],["मासिक फ़ेशियल शुरू करें","ROMAFAM"],["मेहंदी + हेयर बुक करें","ROMAFAM"],["हर वेंडर दोबारा पक्का करें","ROMAFAM"],["फ़ोटोग्राफ़र पक्का करें","ALL"]]},
   {m:"नवंबर",tag:"भेजें · अंतिम · आनंद लें",items:[["व्हाट्सएप निमंत्रण भेजें","ROMAFAM"],["अंतिम संख्या दें","ROMAFAM"],["अल्टर किए कपड़े लें","ROMAFAM"],["दुल्हन की दिन-भर किट पैक करें","ROMAFAM"],["शांत दिन-प्रभारी नियुक्त करें","ALL"],["साँस लें. आनंद लें.","ALL"]]}],
- mr:[{m:"जून – जुलै",tag:"मोठे निर्णय पक्के करा",items:[["लग्न + रिसेप्शनच्या तारखा ठरवा","ALL"],["पाहुण्यांची ढोबळ संख्या ठरवा","ALL"],["एकूण बजेट ठरवा + वाटा","ALL"],["शमाचं स्वीडनहून विमान बुक करा","ROMAFAM"],["सामायिक पाहुणे यादी सुरू करा","ROMAFAM"]]},
+ mr:[{m:"जून – जुलै",tag:"मोठे निर्णय पक्के करा",items:[["लग्न + रिसेप्शनच्या तारखा ठरवा","ALL"],["पाहुण्यांची ढोबळ संख्या ठरवा","ALL"],["एकूण बजेट ठरवा + वाटा","ALL"],["परदेशाहून येणाऱ्यांचं विमान बुक करा","ROMAFAM"],["सामायिक पाहुणे यादी सुरू करा","ROMAFAM"]]},
   {m:"ऑगस्ट",tag:"हॉल · केटरिंग · प्लॅनर",items:[["नाशिकमध्ये ३ हॉल निवडा","ROMAFAM"],["लेखी कोटेशन घ्या","ROMAFAM"],["लग्नाचा हॉल बुक करा + अनामत","ALL"],["केटरर निवडा + बुक करा","ROMAFAM"],["भरतपूर रिसेप्शन नवरदेवाकडून ठरवा","PRASHANTFAM"]]},
   {m:"सप्टेंबर",tag:"सजावट · पत्रिका · खरेदी",items:[["डेकोरेटर + रंगसंगती बुक करा","ALL"],["पत्रिका डिझाइन + ऑर्डर करा","ROMAFAM"],["व्हॉट्सअ‍ॅप डिजिटल पत्रिका बनवा","ROMAFAM"],["नवरीचा मुख्य पोशाख + अल्टरेशन","ROMAFAM"],["दागिने + अ‍ॅक्सेसरीज घ्या","ROMAFAM"],["रिटर्न गिफ्ट (तुळशीबाग)","ROMAFAM"]]},
   {m:"ऑक्टोबर",tag:"नवरीची तयारी · सर्व पक्कं करा",items:[["मेकअप आर्टिस्ट बुक + ट्रायल","ROMAFAM"],["मासिक फेशियल सुरू करा","ROMAFAM"],["मेहंदी + केस बुक करा","ROMAFAM"],["प्रत्येक वेंडर पुन्हा पक्का करा","ROMAFAM"],["फोटोग्राफर पक्का करा","ALL"]]},
   {m:"नोव्हेंबर",tag:"पाठवा · अंतिम · आनंद घ्या",items:[["व्हॉट्सअ‍ॅप पत्रिका पाठवा","ROMAFAM"],["अंतिम संख्या द्या","ROMAFAM"],["अल्टर केलेले कपडे आणा","ROMAFAM"],["नवरीची दिवसभराची बॅग भरा","ROMAFAM"],["शांत दिवस-प्रभारी नेमा","ALL"],["श्वास घ्या. आनंद घ्या.","ALL"]]}],
 };
 const DECISIONS={
- en:[{id:"format",q:"Court marriage, or traditional ceremony?",opts:["Court marriage (simple, quick)","Traditional ceremony","Middle path: court + receptions"]},{id:"pune",q:"Is Pune in the picture?",opts:["Yes — a Pune reception too","No — keep it a shopping trip"]},{id:"venue",q:"Leading Nashik venue?",opts:["Racca Lawns (Kintu)","From Vedant's contacts","Still deciding"]}],
- hi:[{id:"format",q:"कोर्ट मैरिज, या पारंपरिक विवाह?",opts:["कोर्ट मैरिज (सरल, जल्दी)","पारंपरिक विवाह","बीच का रास्ता: कोर्ट + रिसेप्शन"]},{id:"pune",q:"क्या पुणे तस्वीर में है?",opts:["हाँ — पुणे रिसेप्शन भी","नहीं — बस ख़रीदारी यात्रा"]},{id:"venue",q:"नासिक का प्रमुख वेन्यू?",opts:["राक्का लॉन्स (किंटू)","वेदांत के संपर्कों से","अभी तय करना है"]}],
- mr:[{id:"format",q:"कोर्ट मॅरेज, की पारंपरिक विधी?",opts:["कोर्ट मॅरेज (साधं, झटपट)","पारंपरिक विधी","मधला मार्ग: कोर्ट + रिसेप्शन"]},{id:"pune",q:"पुणे चित्रात आहे का?",opts:["हो — पुणे रिसेप्शनही","नाही — फक्त खरेदी फेरी"]},{id:"venue",q:"नाशिकचा आघाडीचा हॉल?",opts:["राक्का लॉन्स (किंटू)","वेदांतच्या संपर्कांतून","अजून ठरवायचंय"]}],
+ en:[{id:"date",q:"Which December date?",opts:["Dec 24","Dec 25","Dec 26","Dec 27"]},{id:"format",q:"Court marriage, or traditional ceremony?",opts:["Court marriage (simple, quick)","Traditional ceremony","Middle path: court + receptions"]},{id:"pune",q:"Is Pune in the picture?",opts:["Yes — a Pune reception too","No — keep it a shopping trip"]},{id:"venue",q:"Leading Nashik venue?",opts:["Racca Lawns (Kintu)","From Vedant's contacts","Still deciding"]}],
+ hi:[{id:"date",q:"दिसंबर की कौन-सी तारीख़?",opts:["24 दिसंबर","25 दिसंबर","26 दिसंबर","27 दिसंबर"]},{id:"format",q:"कोर्ट मैरिज, या पारंपरिक विवाह?",opts:["कोर्ट मैरिज (सरल, जल्दी)","पारंपरिक विवाह","बीच का रास्ता: कोर्ट + रिसेप्शन"]},{id:"pune",q:"क्या पुणे तस्वीर में है?",opts:["हाँ — पुणे रिसेप्शन भी","नहीं — बस ख़रीदारी यात्रा"]},{id:"venue",q:"नासिक का प्रमुख वेन्यू?",opts:["राक्का लॉन्स (किंटू)","वेदांत के संपर्कों से","अभी तय करना है"]}],
+ mr:[{id:"date",q:"डिसेंबरची कोणती तारीख?",opts:["24 डिसेंबर","25 डिसेंबर","26 डिसेंबर","27 डिसेंबर"]},{id:"format",q:"कोर्ट मॅरेज, की पारंपरिक विधी?",opts:["कोर्ट मॅरेज (साधं, झटपट)","पारंपरिक विधी","मधला मार्ग: कोर्ट + रिसेप्शन"]},{id:"pune",q:"पुणे चित्रात आहे का?",opts:["हो — पुणे रिसेप्शनही","नाही — फक्त खरेदी फेरी"]},{id:"venue",q:"नाशिकचा आघाडीचा हॉल?",opts:["राक्का लॉन्स (किंटू)","वेदांतच्या संपर्कांतून","अजून ठरवायचंय"]}],
 };
 const VENDORS={
  en:[["K","Kintu Racca","Racca Lawns — direct venue ask"],["V","Vedant Rathi","Lawns, venues + vendor network"],["O","Ojashree Sarda","Decor + architect contacts"],["A","Aniket Mahajan","Well-connected, wide net"]],
@@ -245,23 +295,43 @@ let lang=localStorage.getItem('wp_lang')||'en';
 let me=localStorage.getItem('wp_me')||null;
 let sb=null,online=false;
 let STATE=JSON.parse(localStorage.getItem('wp_state')||'{}');
-STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];
+STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];STATE.wishes=STATE.wishes||[];
 function saveLocal(){ localStorage.setItem('wp_state',JSON.stringify(STATE)); }
 
 function ownerPill(o){ const color=OWNER_COLOR[o]||"var(--p-all)"; const map={ROMAFAM:"RomaFam",PRASHANTFAM:"PrashantFam",ALL:"ALL"};
   let label=o==="ALL"?"ALL":(T[lang].people[map[o]]||map[o]);
   return `<span class="owner" style="background:${color}22;color:${color}">${label}</span>`; }
 
+function monthProgress(mi){ const items=MONTHS[lang][mi].items; let done=0;
+  items.forEach((_,ii)=>{ if(STATE.checks[`${mi}-${ii}`]) done++; });
+  return {done, total:items.length, pct:Math.round(done/items.length*100)}; }
+
+function renderProgress(){
+  const M=MONTHS[lang]; const short=['Jun','Aug','Sep','Oct','Nov'];
+  let h=`<div class="pstrip">`;
+  M.forEach((mo,mi)=>{ const p=monthProgress(mi); const r=15.5, circ=2*Math.PI*r, off=circ*(1-p.pct/100);
+    h+=`<div class="pring" onclick="jumpMonth(${mi})">
+      <svg width="42" height="42" viewBox="0 0 42 42"><circle cx="21" cy="21" r="${r}" fill="none" stroke="rgba(224,160,48,.18)" stroke-width="3.5"/>
+      <circle cx="21" cy="21" r="${r}" fill="none" stroke="${p.pct===100?'#5fa89c':'var(--gold)'}" stroke-width="3.5" stroke-linecap="round"
+        stroke-dasharray="${circ}" stroke-dashoffset="${off}" transform="rotate(-90 21 21)" style="transition:stroke-dashoffset .5s"/>
+      <text x="21" y="25" text-anchor="middle" font-size="10" fill="var(--ink)" font-family="DM Mono">${p.pct}</text></svg>
+      <span>${short[mi]}</span></div>`;
+  });
+  h+=`</div>`;
+  document.getElementById('progressStrip').innerHTML=h;
+}
+function jumpMonth(mi){ const els=document.querySelectorAll('#plannerBody .month'); if(els[mi]) els[mi].scrollIntoView({behavior:'smooth',block:'start'}); }
+
 function renderPlanner(){ const M=MONTHS[lang]; let h="";
   M.forEach((mo,mi)=>{ h+=`<div class="month"><h2 class="serif">${mo.m}</h2><div class="tag">${mo.tag}</div></div><div class="card">`;
     mo.items.forEach((it,ii)=>{ const key=`${mi}-${ii}`,done=STATE.checks[key];
       h+=`<div class="item ${done?'done':''}" onclick="toggleCheck('${key}')"><div class="box"></div><div class="txt">${it[0]}</div>${ownerPill(it[1])}</div>`;});
     h+=`</div>`; });
-  document.getElementById('planner').innerHTML=h; }
+  document.getElementById('plannerBody').innerHTML=h; renderProgress(); }
 
 function vdot(name){ const p=PEOPLE[name]; if(!p)return''; return `<span class="vdot" style="background:${p.color}" title="${name}">${p.init}</span>`; }
 
-function renderDecisions(){ const D=DECISIONS[lang]; let h=`<div class="banner">${T[lang].decBanner}</div>`;
+function renderDecisions(){ const D=DECISIONS[lang]; let h=familySplitHTML()+`<div class="tree-hint">${T[lang].splitTitle} · ${MONTHS[lang].reduce((a,m)=>a+m.items.length,0)} tasks total</div>`+`<div class="banner">${T[lang].decBanner}</div>`;
   D.forEach(d=>{ const votes=STATE.votes[d.id]||{}; const counts=d.opts.map((_,i)=>Object.values(votes).filter(v=>v===i).length); const total=Object.keys(votes).length;
     h+=`<div class="decision"><div class="q serif">${d.q}</div>`;
     d.opts.forEach((o,i)=>{ const mine=me&&votes[me]===i; const pct=total?Math.round(counts[i]/total*100):0;
@@ -284,21 +354,64 @@ function renderBudget(){ const l=document.getElementById('budgetList'); let tota
   l.innerHTML=STATE.budget.length?STATE.budget.map((b,i)=>{ total+=Number(b.amt)||0; return `<div class="brow"><div class="bcat">${b.cat}</div><div class="bamt">₹${Number(b.amt).toLocaleString('en-IN')}</div><button class="vstatus s-wait" onclick="delBudget(${i})">✕</button></div>`;}).join(''):`<div class="empty">${T[lang].budgetEmpty}</div>`;
   document.getElementById('bTotal').textContent='₹'+total.toLocaleString('en-IN'); }
 
-function renderAll(){ renderPlanner();renderDecisions();renderVendors();renderTodos();renderBudget(); }
+function renderAll(){ renderPlanner();renderDecisions();renderVendors();renderTodos();renderBudget();renderWishes();renderSoul(); }
 
+/* ---- wishes wall ---- */
+function renderWishes(){ const l=document.getElementById('wishList'); if(!l)return;
+  if(!STATE.wishes.length){ l.innerHTML=`<div class="empty">${T[lang].wishEmpty}</div>`; return;}
+  l.innerHTML=STATE.wishes.map((w,i)=>{ const color=w.by&&PEOPLE[w.by]?PEOPLE[w.by].color:"var(--p-all)"; const lab=w.by?(T[lang].people[w.by]||w.by):'';
+    return `<div class="wish" style="border-left:3px solid ${color}"><div class="wtext">"${w.text}"</div><div class="wby" style="color:${color}">— ${lab}</div></div>`;}).join(''); }
+function addWish(){ const el=document.getElementById('newWish'),t=el.value.trim(); if(!t)return; STATE.wishes.unshift({text:t,by:me||''}); el.value=''; commit(); renderWishes(); }
+
+/* ---- family split / venn (rendered into decisions top) ---- */
+function familySplitHTML(){
+  // count owner tags across all months
+  let roma=0,prashant=0,shared=0;
+  MONTHS[lang].forEach(mo=>mo.items.forEach(it=>{ if(it[1]==='ROMAFAM')roma++; else if(it[1]==='PRASHANTFAM')prashant++; else shared++; }));
+  return `<div class="venn">
+    <div class="vc" style="--c:var(--p-roma)"><div class="vcount">${roma}</div><div class="vlab">${T[lang].people.RomaFam}</div></div>
+    <div class="vshared"><div class="vcount">${shared}</div><div class="vlab">${T[lang].sharedTitle}</div></div>
+    <div class="vc" style="--c:var(--p-pfam)"><div class="vcount">${prashant}</div><div class="vlab">${T[lang].people.PrashantFam}</div></div>
+  </div>`;
+}
+
+/* ---- soul / esoteric tab ---- */
+const SOUL = { ready:true, content:{"en": "<div class=\"soul-intro\"><div class=\"soul-em\">✦</div><h2 class=\"serif\">The Soul of This Union</h2>\n<p>Two charts, read side by side, across the systems that have tried for centuries to name what holds people together. Not fortune-telling. A mirror. Here is what stands out, and how to actually use it.</p>\n<p class=\"soul-note\">Roma\'s reading is full. Prashant\'s deeper layers wait on his exact birth time and place. What\'s written for him here is true at the sun-and-number level; the rest gets added once we have his details.</p></div>\n\n<div class=\"soul-section\"><div class=\"sys\">THE THREAD THAT BINDS THEM</div><h3>Both ruled by Jupiter</h3>\n<p>Roma is Sagittarius. Prashant is Pisces. In the old system, these are the two signs Jupiter governs, the planet of faith, growth, generosity, and meaning. This is rare and worth pausing on: two people whose core natures answer to the same teacher.</p>\n<p>It means they are wired to grow, to believe in something larger, to be generous to a fault. The risk is also shared: both can overpromise, overextend, lose the thread of the practical.</p>\n<div class=\"use\">Live it: let one of you hold the vision and the other hold the ground, and trade roles often. Their marriage thrives on a shared sense of purpose. Decide early what you are building toward together, and return to it when small things scatter you.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">VEDIC · THE MOON AND THE FIRE</div><h3>Sagittarius fire, Pisces water</h3>\n<p>Fire and water make steam, energy, movement, sometimes scald. Roma\'s Sagittarian fire is honest, restless, allergic to cages. Prashant\'s Piscean water is deep, absorbing, quietly intuitive. She moves toward the horizon; he feels the current beneath.</p>\n<p>Her nakshatra and his full chart need birth times to read truly. What\'s certain: her independence is not coldness, and his sensitivity is not weakness. Naming that early saves years.</p>\n<div class=\"use\">Live it: when she needs space, it is not rejection. When he goes quiet, it is not sulking, it is processing. Give each other the room your elements ask for.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">NUMEROLOGY · THE LIFE PATH</div><h3>Roma walks 5, Prashant walks 3</h3>\n<p>Roma\'s Life Path is 5, the number of freedom, change, the senses, the traveller who must taste life directly. Prashant\'s is 3, the number of expression, joy, words, the one who makes things lighter.</p>\n<p>5 and 3 are an easy, playful pairing, both restless, both curious, neither one wanting a small grey life. Together they make a household that laughs and moves. The shadow: 5 can scatter, 3 can avoid hard feelings with charm. Neither naturally sits still in discomfort.</p>\n<div class=\"use\">Live it: build one steadying ritual that is just yours, a weekly walk, a Sunday meal, anything repeated. Two free spirits need one fixed point. Let that be your anchor.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">CHINESE · DAY MASTER & ANIMAL</div><h3>Wood Dog meets Water Rooster</h3>\n<p>Roma is a Yang Wood Dog, loyal, principled, protective, a tree that shelters its people. Prashant is a Yin Water Rooster, sharp-eyed, articulate, precise, water that finds every crack and fills it.</p>\n<p>Dog and Rooster sit beside each other in the cycle, not a storybook match, not a clash either. It is the pairing that works through respect rather than fireworks. Wood is fed by water: his depth quietly nourishes her growth.</p>\n<div class=\"use\">Live it: she gives loyalty and steadiness; he gives clarity and detail. Let him be the one who notices what is missing, and let her be the one who decides it does not matter. That division of labour will save you a hundred arguments.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">JUNG · WHAT EACH CARRIES FOR THE OTHER</div><h3>The seeker and the dreamer</h3>\n<p>In Jung\'s language, Roma carries the energy of the seeker, the one who leaves to find truth. Prashant carries the dreamer, the one who feels what cannot be said. Each holds the part the other has less of. That is the quiet engine of attraction, and later, of friction.</p>\n<div class=\"use\">Live it: the very thing that drew you will one day annoy you, her need to roam, his need to retreat. When it does, remember it is the same trait you fell for. Irritation is usually love that forgot why.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">STOIC & HERMETIC · THE PRACTICE</div><h3>What is yours to control</h3>\n<p>The Stoics would tell this couple one thing: you cannot control your families, the weather on the day, or each other\'s moods, only your own response. A Jupiter marriage especially must guard against expecting too much and resenting the gap.</p>\n<p>The Hermetic principle, as above so below, means the small patterns become the large ones. How you handle one tense dinner is how you will handle a decade.</p>\n<div class=\"use\">Live it: in any conflict, each of you names only the one thing you can change in yourself. Not the other\'s fault, your own next move. Do this and most fights end before they start.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">KABBALAH · THE BALANCE</div><h3>Giving and receiving</h3>\n<p>The tree of life turns on balance between Chesed (loving-kindness, expansion) and Gevurah (boundary, restraint). Two Jupiter people lean hard toward Chesed, give, give, expand, say yes. A lasting marriage needs Gevurah too: the loving no, the boundary that protects the yes.</p>\n<div class=\"use\">Live it: practise saying no, to guests, to obligations, to each other, without guilt. A boundary is not a wall. It is what keeps the generosity from draining you both dry.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">HUMAN DESIGN · PENDING</div><h3>Needs birth times</h3>\n<p>Human Design type, authority, and strategy depend on exact birth time. Both are unconfirmed. Once we have Roma\'s and Prashant\'s birth times, this section reveals how each is built to make decisions, and how to make them together without overriding each other.</p>\n<div class=\"use\">For now: ask each set of parents for the birth time on the certificate or in family memory. It unlocks the most practical part of this whole reading.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">THE DATES · ENERGY, NOT VERDICT</div><h3>December 24 to 27</h3>\n<p>A true muhurat is read by a pandit against the panchang, the tithi, nakshatra, and inauspicious windows of each specific day and hour. That is theirs to give, not mine to invent. What I can offer is gentle: late December sits in the Sagittarius season, Roma\'s own fire, which carries a natural warmth for a Jupiter union.</p>\n<div class=\"use\">Live it: take these four dates to a trusted pandit with both birth details. Let the family\'s vote in this app be the shortlist, and the pandit\'s reading be the final word. Tradition and tech, each doing what it does best.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">THE ONE LINE TO KEEP</div><h3>Two believers, one ground</h3>\n<p>Everything above reduces to this: two generous, growth-hungry, Jupiter-ruled people who will build something expansive and meaningful, if they remember to also build something small, steady, and theirs. The vision will take care of itself. Protect the ordinary.</p></div>", "hi": "<div class=\"soul-intro\"><div class=\"soul-em\">✦</div><h2 class=\"serif\">इस मिलन की आत्मा</h2>\n<p>दो कुंडली, साथ-साथ पढ़ी गईं, उन परंपराओं से जो सदियों से यह बताने की कोशिश करती हैं कि लोगों को क्या जोड़े रखता है। भविष्यवाणी नहीं, एक आईना।</p>\n<p class=\"soul-note\">रोमा का पाठ पूरा है। प्रशांत की गहरी परतें उनके सही जन्म समय और स्थान पर निर्भर हैं।</p></div>\n\n<div class=\"soul-section\"><div class=\"sys\">जो धागा इन्हें बाँधता है</div><h3>दोनों पर गुरु (बृहस्पति) का शासन</h3>\n<p>रोमा धनु हैं, प्रशांत मीन। पुरानी पद्धति में ये दोनों राशियाँ बृहस्पति की हैं, श्रद्धा, विकास और उदारता का ग्रह। दो लोग जिनका मूल स्वभाव एक ही गुरु को उत्तर देता है, यह दुर्लभ है।</p>\n<div class=\"use\">जिएँ: एक दृष्टि थामे, दूसरा ज़मीन, और भूमिकाएँ बदलते रहें। पहले तय करें कि आप साथ मिलकर क्या बना रहे हैं।</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">अंक ज्योतिष</div><h3>रोमा 5, प्रशांत 3</h3>\n<p>रोमा का जीवन पथ 5 है, स्वतंत्रता और बदलाव का। प्रशांत का 3 है, अभिव्यक्ति और आनंद का। यह एक हल्की, चंचल जोड़ी है। छाया: 5 बिखर सकता है, 3 कठिन भावनाओं से बच सकता है।</p>\n<div class=\"use\">जिएँ: एक स्थिर साप्ताहिक रिवाज़ बनाएँ जो सिर्फ़ आपका हो। दो स्वतंत्र आत्माओं को एक स्थिर बिंदु चाहिए।</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">चीनी · डे मास्टर</div><h3>लकड़ी का कुत्ता, पानी का मुर्गा</h3>\n<p>रोमा यांग लकड़ी की कुत्ता, वफ़ादार और रक्षक। प्रशांत यिन पानी का मुर्गा, तेज़ नज़र, स्पष्ट। पानी लकड़ी को सींचता है, उसकी गहराई उसके विकास को पोषती है।</p>\n<div class=\"use\">जिएँ: वह वफ़ादारी और स्थिरता दे, वह स्पष्टता और बारीकी। यही बँटवारा सौ झगड़े बचाएगा।</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">तारीख़ें · ऊर्जा, फ़ैसला नहीं</div><h3>24 से 27 दिसंबर</h3>\n<p>असली मुहूर्त पंडित जी पंचांग से पढ़ते हैं। वह उनका काम है, मेरा गढ़ना नहीं। बस इतना: दिसंबर का अंत धनु ऋतु में है, रोमा की अपनी अग्नि।</p>\n<div class=\"use\">जिएँ: इन चार तारीख़ों को दोनों जन्म विवरण के साथ भरोसेमंद पंडित के पास ले जाएँ। ऐप का वोट सूची हो, पंडित का वचन अंतिम।</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">रखने लायक़ एक पंक्ति</div><h3>दो आस्थावान, एक ज़मीन</h3>\n<p>दो उदार, विकास के भूखे, गुरु-शासित लोग कुछ विशाल बनाएँगे, अगर वे कुछ छोटा, स्थिर और अपना भी बनाना याद रखें। दृष्टि अपना ध्यान रख लेगी। साधारण की रक्षा करें।</p></div>", "mr": "<div class=\"soul-intro\"><div class=\"soul-em\">✦</div><h2 class=\"serif\">या मिलनाची आत्मा</h2>\n<p>दोन कुंडल्या, शेजारी-शेजारी वाचलेल्या, ज्या परंपरांनी शतकानुशतके माणसांना काय जोडतं हे सांगण्याचा प्रयत्न केला. भविष्य नव्हे, एक आरसा.</p>\n<p class=\"soul-note\">रोमाचं वाचन पूर्ण आहे. प्रशांतच्या खोल थर त्याच्या नेमक्या जन्मवेळ व स्थानावर अवलंबून आहेत.</p></div>\n\n<div class=\"soul-section\"><div class=\"sys\">जो धागा यांना बांधतो</div><h3>दोघांवरही गुरूचं राज्य</h3>\n<p>रोमा धनु, प्रशांत मीन. जुन्या पद्धतीत या दोन्ही राशी गुरूच्या, श्रद्धा, वाढ आणि औदार्याचा ग्रह. दोन माणसं ज्यांचा मूळ स्वभाव एकाच गुरूला उत्तर देतो, हे दुर्मिळ.</p>\n<div class=\"use\">जगा: एकाने दृष्टी धरावी, दुसऱ्याने जमीन, आणि भूमिका बदलत राहाव्या. आधी ठरवा की तुम्ही एकत्र काय उभं करताय.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">अंकशास्त्र</div><h3>रोमा 5, प्रशांत 3</h3>\n<p>रोमाचा जीवनमार्ग 5, स्वातंत्र्य आणि बदलाचा. प्रशांतचा 3, अभिव्यक्ती आणि आनंदाचा. ही हलकी, खेळकर जोडी. छाया: 5 विखुरू शकतो, 3 कठीण भावना टाळू शकतो.</p>\n<div class=\"use\">जगा: एक स्थिर साप्ताहिक प्रथा बनवा जी फक्त तुमची असेल. दोन स्वतंत्र जीवांना एक स्थिर बिंदू हवा.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">चिनी · डे मास्टर</div><h3>लाकडी कुत्रा, पाण्याचा कोंबडा</h3>\n<p>रोमा यांग लाकडी कुत्रा, निष्ठावान आणि रक्षक. प्रशांत यिन पाण्याचा कोंबडा, तीक्ष्ण नजर, स्पष्ट. पाणी लाकडाला पोसतं, त्याची खोली तिच्या वाढीला पोसते.</p>\n<div class=\"use\">जगा: तिने निष्ठा व स्थैर्य द्यावं, त्याने स्पष्टता व बारकावा. हीच विभागणी शंभर भांडणं वाचवेल.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">तारखा · ऊर्जा, निकाल नव्हे</div><h3>24 ते 27 डिसेंबर</h3>\n<p>खरा मुहूर्त पंडितजी पंचांगातून वाचतात. ते त्यांचं काम, माझं रचणं नव्हे. एवढंच: डिसेंबरचा शेवट धनु ऋतूत, रोमाची स्वतःची अग्नी.</p>\n<div class=\"use\">जगा: या चार तारखा दोघांच्या जन्मतपशिलांसह विश्वासू पंडिताकडे न्या. अ‍ॅपचं मत यादी असावी, पंडिताचं वचन अंतिम.</div></div>\n\n<div class=\"soul-section\"><div class=\"sys\">लक्षात ठेवण्याजोगी एक ओळ</div><h3>दोन श्रद्धावान, एक जमीन</h3>\n<p>दोन उदार, वाढीची भूक असलेली, गुरू-शासित माणसं काहीतरी विशाल उभं करतील, जर त्यांनी काहीतरी लहान, स्थिर आणि स्वतःचंही उभं करायचं लक्षात ठेवलं. दृष्टी स्वतःची काळजी घेईल. साध्याचं रक्षण करा.</p></div>"} };
+function renderSoul(){ const el=document.getElementById('soul'); if(!el)return;
+  if(SOUL.ready){ el.innerHTML=SOUL.content[lang]||SOUL.content.en; return; }
+  const msg={
+   en:`<div class="soul-intro"><div class="soul-em">✦</div><h2 class="serif">The Soul of This Union</h2>
+     <p>A reading woven from many traditions — Vedic, Human Design, Day Master, Kabbalah, Hermetic, Jungian and more — written to be lived, not just read.</p>
+     <p class="soul-wait">This reading is being prepared from Roma and Prashant's birth details. Once their charts are added, this space holds their compatibility, the soul of their union, and the energy each wedding date carries.</p>
+     <p class="soul-note">Auspicious timing (muhurat) will be marked here for a pandit to confirm — a starting point for the family, never the final word.</p></div>`,
+   hi:`<div class="soul-intro"><div class="soul-em">✦</div><h2 class="serif">इस मिलन की आत्मा</h2>
+     <p>कई परंपराओं से बुना एक पाठ — वैदिक, ह्यूमन डिज़ाइन, डे मास्टर, कबाला, हर्मेटिक, युंगियन और बहुत कुछ — जीने के लिए, सिर्फ़ पढ़ने के लिए नहीं।</p>
+     <p class="soul-wait">यह पाठ रोमा और प्रशांत के जन्म विवरण से तैयार हो रहा है। उनकी कुंडली जुड़ते ही, यहाँ उनकी अनुकूलता और हर तारीख़ की ऊर्जा होगी।</p>
+     <p class="soul-note">शुभ मुहूर्त यहाँ पंडित जी की पुष्टि के लिए अंकित होगा — परिवार के लिए एक शुरुआत, अंतिम शब्द नहीं।</p></div>`,
+   mr:`<div class="soul-intro"><div class="soul-em">✦</div><h2 class="serif">या मिलनाची आत्मा</h2>
+     <p>अनेक परंपरांतून विणलेलं एक वाचन — वैदिक, ह्यूमन डिझाइन, डे मास्टर, कबाला, हर्मेटिक, युंगियन आणि बरंच काही — जगण्यासाठी, फक्त वाचण्यासाठी नाही.</p>
+     <p class="soul-wait">हे वाचन रोमा आणि प्रशांतच्या जन्म तपशिलांतून तयार होत आहे. त्यांची कुंडली जोडताच, इथे त्यांची सुसंगती आणि प्रत्येक तारखेची ऊर्जा असेल.</p>
+     <p class="soul-note">शुभ मुहूर्त इथे पंडितजींच्या पुष्टीसाठी नोंदवला जाईल — कुटुंबासाठी एक सुरुवात, अंतिम शब्द नाही.</p></div>`
+  };
+  el.innerHTML=msg[lang]||msg.en;
+}
 function applyLang(){ document.body.className='lang-'+lang;
   document.querySelectorAll('[data-t]').forEach(el=>{ const k=el.getAttribute('data-t'); if(T[lang][k])el.textContent=T[lang][k]; });
   document.querySelectorAll('.lang-switch button').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
   document.getElementById('newTodo').placeholder=T[lang].addTodo; document.getElementById('bCat').placeholder=T[lang].bCat; document.getElementById('bAmt').placeholder=T[lang].bAmt;
+  const nw=document.getElementById('newWish'); if(nw) nw.placeholder=T[lang].addWish;
   document.getElementById('whoBtn').textContent=me?(T[lang].iam.replace('…','').trim()+' '+(T[lang].people[me]||me).split(' · ')[0]):T[lang].iam;
-  buildWhoGrid(); renderAll(); }
+  buildWhoGrid(); renderAll(); if(document.getElementById('countdown')) renderCountdown(); }
 function setLang(l){ lang=l; localStorage.setItem('wp_lang',l); applyLang(); }
 
 function buildWhoGrid(){ const g=document.getElementById('whoGrid');
   g.innerHTML=Object.keys(PEOPLE).map(k=>{ const p=PEOPLE[k]; const label=T[lang].people[k]||k;
     return `<button onclick="setMe('${k}')"><span class="swatch" style="background:${p.color}"></span>${label}</button>`;}).join(''); }
 
-function toggleCheck(k){ STATE.checks[k]=!STATE.checks[k]; commit(); renderPlanner(); }
+function toggleCheck(k){ const wasMonth=parseInt(k.split('-')[0]); const before=monthProgress(wasMonth).pct;
+  STATE.checks[k]=!STATE.checks[k]; commit(); renderPlanner();
+  const after=monthProgress(wasMonth).pct;
+  if(before<100 && after===100) celebrate(wasMonth); }
 function castVote(id,i){ if(!me){openWho();return;} STATE.votes[id]=STATE.votes[id]||{}; STATE.votes[id][me]=i; commit(); renderDecisions(); }
 function cycleVendor(i){ const o={wait:'replied',replied:'booked',booked:'wait'}; STATE.vendors[i]=o[STATE.vendors[i]||'wait']; commit(); renderVendors(); }
 function addTodo(){ const el=document.getElementById('newTodo'),t=el.value.trim(); if(!t)return; STATE.todos.push({text:t,done:false,by:me||''}); el.value=''; commit(); renderTodos(); }
@@ -318,12 +431,37 @@ async function commit(){ saveLocal(); if(!online)return;
 async function initCloud(){ const dot=document.getElementById('syncDot'),txt=document.getElementById('syncTxt');
   try{ sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
     const {data}=await sb.from('wedding').select('data').eq('code',WEDDING_CODE).maybeSingle();
-    if(data&&data.data){ STATE=data.data; STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[]; saveLocal(); renderAll(); }
+    if(data&&data.data){ STATE=data.data; STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];STATE.wishes=STATE.wishes||[]; saveLocal(); renderAll(); }
     else { await sb.from('wedding').upsert({code:WEDDING_CODE,data:STATE,updated:new Date().toISOString()}); }
     online=true; dot.className='dot on'; txt.textContent='live · synced';
     sb.channel('wp').on('postgres_changes',{event:'*',schema:'public',table:'wedding',filter:`code=eq.${WEDDING_CODE}`},p=>{ if(p.new&&p.new.data){ STATE=p.new.data; saveLocal(); renderAll(); }}).subscribe();
   }catch(e){ online=false; dot.className='dot off'; txt.textContent='offline · saved on phone'; console.warn('cloud fail',e); } }
 
+/* ---- countdown ---- */
+function renderCountdown(){
+  const now=new Date(); const diff=WEDDING_DATE-now;
+  const el=document.getElementById('countdown'); if(!el)return;
+  const days=Math.ceil(diff/(1000*60*60*24));
+  const word={en:days===1?'day to go':'days to go',hi:'दिन बाकी',mr:'दिवस बाकी'}[lang];
+  if(days>0) el.innerHTML=`<span class="cd-num">${days}</span> ${word}`;
+  else if(days===0) el.innerHTML={en:'✨ Today is the day ✨',hi:'✨ आज का दिन ✨',mr:'✨ आजचा दिवस ✨'}[lang];
+  else el.innerHTML={en:'✨ Just married ✨',hi:'✨ विवाह संपन्न ✨',mr:'✨ विवाह संपन्न ✨'}[lang];
+}
+/* ---- celebration burst ---- */
+function celebrate(mi){
+  const layer=document.getElementById('petalLayer');
+  const cols=['#e0a030','#e8a55f','#5fa89c','#e8c869','#d4a843'];
+  for(let i=0;i<28;i++){
+    const d=document.createElement('div'); d.className='burst';
+    const x=Math.random()*100, sz=6+Math.random()*7, c=cols[i%cols.length], rot=Math.random()*360;
+    d.style.cssText=`left:${x}vw;top:28vh;animation-delay:${Math.random()*.3}s;`;
+    d.innerHTML=`<svg width="${sz*2}" height="${sz*2}" viewBox="0 0 12 12" style="transform:rotate(${rot}deg)"><path d="M6 1 Q10 5 6 11 Q2 5 6 1" fill="${c}"/></svg>`;
+    layer.appendChild(d); setTimeout(()=>d.remove(),2600);
+  }
+  const M=MONTHS[lang][mi]; const msg={en:'done!',hi:'पूर्ण!',mr:'पूर्ण!'}[lang];
+  const toast=document.createElement('div'); toast.className='celebrate-toast'; toast.innerHTML=`✨ ${M.m} ${msg} ✨`;
+  document.body.appendChild(toast); setTimeout(()=>toast.remove(),2600);
+}
 /* ---- cultural animation builders ---- */
 function buildToran(){
   let s=`<svg viewBox="0 0 400 34" preserveAspectRatio="none"><path d="M0 5 Q200 28 400 5" stroke="var(--gold)" stroke-width="1.5" fill="none"/>`;
@@ -359,7 +497,8 @@ function buildFrames(){
 }
 
 buildToran(); buildPetals(); buildFrames();
-buildWhoGrid(); applyLang(); if(!me) openWho(); initCloud();
+buildWhoGrid(); applyLang(); renderCountdown(); if(!me) openWho(); initCloud();
+setInterval(renderCountdown, 60*60*1000);
 document.getElementById('newTodo').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo();});
 </script>
 </body>
