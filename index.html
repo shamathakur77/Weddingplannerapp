@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>Roma &amp; Prashant · Wedding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,600&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Noto+Serif+Devanagari:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+:root{
+  --bg1:#1b2a2e; --bg2:#241a16; --ink:#f0e6d2; --gold:#d4a843; --gold-soft:rgba(212,168,67,.25);
+  --rust:#d98c5f; --teal:#5fa89c; --muted:#8a9590; --line:rgba(212,168,67,.22); --card:rgba(255,250,235,.055);
+  --p-shama:#5fa89c; --p-roma:#5fa89c; --p-mom:#d4a843; --p-prashant:#c77dff; --p-pfam:#d98c5f; --p-all:#c8ae5c;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{ font-family:'DM Mono',monospace; color:var(--ink);
+  background:linear-gradient(165deg,var(--bg1),var(--bg2) 70%); background-attachment:fixed; min-height:100vh; padding-bottom:80px;}
+body.lang-hi, body.lang-mr{ font-family:'Noto Sans Devanagari',sans-serif;}
+.serif{ font-family:'Cormorant Garamond',serif;} .disp{ font-family:'Fraunces',serif;}
+body.lang-hi .serif,body.lang-mr .serif,body.lang-hi .disp,body.lang-mr .disp{ font-family:'Noto Serif Devanagari',serif;}
+header{ text-align:center; padding:18px 16px 14px; position:relative;}
+header::after{ content:"✦  ✦  ✦"; position:absolute; bottom:5px; left:0; right:0; font-size:7px; color:var(--gold); letter-spacing:8px; opacity:.5;}
+.kicker{ font-size:9px; letter-spacing:3px; color:var(--gold);}
+h1{ font-family:'Fraunces',serif; font-weight:700; font-size:29px; margin:3px 0 1px; line-height:1.1; color:#f4ecd8;}
+body.lang-hi h1,body.lang-mr h1{ font-family:'Noto Serif Devanagari',serif;}
+h1 .amp{ color:var(--gold); font-style:italic;}
+.sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px; color:#bfa86a;}
+body.lang-hi .sub,body.lang-mr .sub{ font-family:'Noto Serif Devanagari',serif; font-style:normal;}
+.controls{ display:flex; gap:8px; justify-content:center; align-items:center; margin-top:10px; flex-wrap:wrap;}
+.lang-switch{ display:inline-flex; gap:3px; background:rgba(0,0,0,.2); border-radius:14px; padding:3px;}
+.lang-switch button{ background:none; border:none; color:var(--muted); font-family:inherit; font-size:10px; padding:4px 9px; border-radius:11px;}
+.lang-switch button.on{ background:var(--gold); color:var(--bg1); font-weight:600;}
+.whoBtn{ background:none; border:1px solid var(--line); color:var(--teal); border-radius:16px; padding:5px 12px; font-family:inherit; font-size:10px;}
+.sync{ display:flex; align-items:center; justify-content:center; gap:5px; font-size:9px; color:var(--muted); margin-top:8px;}
+.dot{ width:7px;height:7px;border-radius:50%; background:var(--gold);}
+.dot.on{ background:var(--teal); box-shadow:0 0 0 3px rgba(95,168,156,.2);}
+.dot.off{ background:var(--rust);}
+main{ padding:6px 14px 20px; max-width:560px; margin:0 auto;}
+.panel{ display:none;} .panel.active{ display:block; animation:fade .25s;}
+@keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.month{ margin:17px 0 6px; padding-left:2px;}
+.month h2{ font-family:'Cormorant Garamond',serif; color:var(--rust); font-size:22px; margin:0; font-weight:700;}
+body.lang-hi .month h2,body.lang-mr .month h2{ font-family:'Noto Serif Devanagari',serif;}
+.month .tag{ font-size:9px; color:var(--teal); letter-spacing:1.5px;}
+.card{ background:var(--card); border:1px solid var(--line); border-radius:15px; padding:13px 14px; margin-bottom:11px; box-shadow:0 4px 18px rgba(0,0,0,.18);}
+.item{ display:flex; align-items:flex-start; gap:11px; padding:9px 2px; border-bottom:1px solid rgba(212,168,67,.12);}
+.item:last-child{ border-bottom:none;}
+.item .box{ width:22px;height:22px;min-width:22px; border:1.8px solid var(--gold); border-radius:6px; margin-top:1px; display:flex;align-items:center;justify-content:center; transition:.15s;}
+.item.done .box{ background:var(--teal); border-color:var(--teal);}
+.item.done .box::after{ content:"✓"; color:#0d1a18; font-size:13px; font-weight:700;}
+.item .txt{ flex:1; font-size:13px; line-height:1.4;}
+.item.done .txt{ color:var(--muted); text-decoration:line-through;}
+.owner{ font-size:9px; padding:2px 8px; border-radius:11px; white-space:nowrap; margin-top:2px; font-weight:500;}
+.decision{ margin-bottom:20px;}
+.decision .q{ font-family:'Cormorant Garamond',serif; font-size:19px; font-weight:600; margin-bottom:10px; color:#f0e2c4;}
+body.lang-hi .decision .q,body.lang-mr .decision .q{ font-family:'Noto Serif Devanagari',serif;}
+.opt{ border:1px solid var(--line); border-radius:13px; padding:11px 13px; margin-bottom:9px; background:var(--card);}
+.opt .top{ display:flex; justify-content:space-between; align-items:center; gap:10px;}
+.opt .label{ font-size:13px;}
+.votebtn{ border:1px solid var(--teal); color:var(--teal); background:none; border-radius:18px; padding:6px 14px; font-family:inherit; font-size:10px; white-space:nowrap;}
+.opt.voted .votebtn{ background:var(--teal); color:var(--bg1); font-weight:600;}
+.bar{ height:7px; background:rgba(212,168,67,.15); border-radius:4px; margin-top:9px; overflow:hidden;}
+.bar>i{ display:block; height:100%; background:linear-gradient(90deg,var(--teal),var(--gold)); width:0; transition:width .4s;}
+.tally{ font-size:9px; color:var(--muted); margin-top:6px; display:flex; justify-content:space-between; gap:8px;}
+.voters{ display:flex; gap:4px; flex-wrap:wrap; justify-content:flex-end;}
+.vdot{ width:15px;height:15px;border-radius:50%; font-size:8px; display:inline-flex; align-items:center; justify-content:center; color:#0d1a18; font-weight:700;}
+.vendor{ display:flex; align-items:center; gap:11px; padding:11px 2px; border-bottom:1px solid rgba(212,168,67,.12);}
+.vendor:last-child{ border-bottom:none;}
+.vavatar{ width:38px;height:38px;border-radius:50%; display:flex;align-items:center;justify-content:center; font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:700; color:#0d1a18;}
+.vinfo{ flex:1;} .vinfo .vn{ font-size:13px;} .vinfo .vr{ font-size:10px; color:var(--muted);}
+.vstatus{ font-size:9px; padding:5px 10px; border-radius:12px; border:none; font-family:inherit;}
+.s-wait{ background:rgba(212,168,67,.16); color:var(--gold);}
+.s-replied{ background:rgba(95,168,156,.18); color:var(--teal);}
+.s-booked{ background:var(--teal); color:var(--bg1); font-weight:600;}
+.addrow{ display:flex; gap:8px; margin-bottom:12px;}
+.addrow input{ flex:1; border:1px solid var(--line); border-radius:11px; padding:11px; font-family:inherit; font-size:13px; background:rgba(0,0,0,.2); color:var(--ink);}
+.addrow input::placeholder{ color:var(--muted);}
+.addrow input:focus{ outline:none; border-color:var(--teal);}
+.addrow button{ background:var(--teal); color:var(--bg1); border:none; border-radius:11px; padding:0 16px; font-size:18px; font-weight:700;}
+.brow{ display:flex; align-items:center; gap:10px; padding:10px 2px; border-bottom:1px solid rgba(212,168,67,.12);}
+.brow .bcat{ flex:1; font-size:13px;} .brow .bamt{ font-size:12px; color:var(--gold);}
+.budget-total{ display:flex; justify-content:space-between; font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:700; padding:13px 4px 2px; color:var(--rust);}
+body.lang-hi .budget-total,body.lang-mr .budget-total{ font-family:'Noto Serif Devanagari',serif;}
+.empty{ text-align:center; color:var(--muted); font-style:italic; font-family:'Cormorant Garamond',serif; padding:24px; font-size:15px;}
+.banner{ background:rgba(217,140,95,.1); border:1px solid rgba(217,140,95,.4); color:#e8b89a; border-radius:12px; padding:11px 13px; font-size:11px; line-height:1.5; margin:10px 0;}
+nav{ position:fixed; bottom:0; left:0; right:0; background:rgba(13,18,16,.82); backdrop-filter:blur(12px); border-top:1px solid var(--line); display:flex; justify-content:space-around; padding:8px 4px calc(8px + env(safe-area-inset-bottom)); z-index:50;}
+nav button{ background:none;border:none; display:flex; flex-direction:column; align-items:center; gap:3px; color:var(--muted); font-family:inherit; font-size:8.5px; padding:4px 5px; flex:1;}
+nav button.active{ color:var(--gold);}
+nav button svg{ width:20px;height:20px; stroke:currentColor;}
+.modal{ position:fixed; inset:0; background:rgba(10,14,12,.7); display:flex; align-items:center; justify-content:center; z-index:100; padding:24px;}
+.modal.hide{ display:none;}
+.mbox{ background:#1b2724; border-radius:20px; padding:26px 24px; max-width:340px; width:100%; text-align:center; border:1px solid var(--gold);}
+.mbox h3{ font-family:'Fraunces',serif; font-size:23px; margin:0 0 5px; color:#f0e2c4;}
+body.lang-hi .mbox h3,body.lang-mr .mbox h3{ font-family:'Noto Serif Devanagari',serif;}
+.mbox p{ font-size:11px; color:var(--muted); margin:0 0 18px; line-height:1.5;}
+.who{ display:grid; grid-template-columns:1fr 1fr; gap:10px;}
+.who button{ border:1px solid var(--line); background:var(--card); border-radius:13px; padding:13px 8px; font-family:'Cormorant Garamond',serif; font-size:15px; color:var(--ink); display:flex; flex-direction:column; align-items:center; gap:6px;}
+body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devanagari',serif;}
+.who button .swatch{ width:26px;height:26px;border-radius:50%;}
+</style>
+</head>
+<body class="lang-en">
+<header>
+  <div class="kicker" data-t="kicker">A MEETING OF TWO HOMES</div>
+  <h1 class="disp">Roma <span class="amp">&amp;</span> Prashant</h1>
+  <div class="sub" data-t="sub">Nashik · Bharatpur · November</div>
+  <div class="controls">
+    <div class="lang-switch">
+      <button data-l="en" class="on" onclick="setLang('en')">EN</button>
+      <button data-l="hi" onclick="setLang('hi')">हिं</button>
+      <button data-l="mr" onclick="setLang('mr')">मरा</button>
+    </div>
+    <button class="whoBtn" id="whoBtn" onclick="openWho()" data-t="iam">I am …</button>
+  </div>
+  <div class="sync"><span class="dot" id="syncDot"></span><span id="syncTxt">…</span></div>
+</header>
+<main>
+  <div id="cfgBanner" class="banner" style="display:none;"></div>
+  <section class="panel active" id="planner"></section>
+  <section class="panel" id="decisions"></section>
+  <section class="panel" id="vendors"></section>
+  <section class="panel" id="tracker">
+    <div class="addrow"><input id="newTodo" maxlength="120"><button onclick="addTodo()">+</button></div>
+    <div id="todoList"></div>
+  </section>
+  <section class="panel" id="budget">
+    <div class="addrow"><input id="bCat" maxlength="40" style="flex:2;"><input id="bAmt" maxlength="12" inputmode="numeric" style="flex:1.3;"><button onclick="addBudget()">+</button></div>
+    <div class="card"><div id="budgetList"></div><div class="budget-total"><span data-t="totalPlanned">Total planned</span><span id="bTotal">₹0</span></div></div>
+  </section>
+</main>
+<nav>
+  <button data-tab="planner" class="active" onclick="show('planner',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg><span data-t="t_planner">Planner</span></button>
+  <button data-tab="decisions" onclick="show('decisions',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M9 12l2 2 4-4"/></svg><span data-t="t_decisions">Decisions</span></button>
+  <button data-tab="vendors" onclick="show('vendors',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 21h18M5 21V7l8-4v18M19 21V11l-6-4"/></svg><span data-t="t_vendors">Vendors</span></button>
+  <button data-tab="tracker" onclick="show('tracker',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg><span data-t="t_tracker">Tracker</span></button>
+  <button data-tab="budget" onclick="show('budget',this)"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg><span data-t="t_budget">Budget</span></button>
+</nav>
+<div class="modal" id="whoModal"><div class="mbox">
+  <h3 class="disp" data-t="whoTitle">Who's planning?</h3>
+  <p data-t="whoSub">Pick your name so your votes and ticks show for everyone. No sign-up.</p>
+  <div class="who" id="whoGrid"></div>
+</div></div>
+
+<script>
+const SUPABASE_URL = "https://mrbzglbnjwoyxtsmmsud.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_SQdkFvRB6M2FTZ96mZOShQ_Lzd9G7y7";
+const WEDDING_CODE = "roma-prashant-nov";
+
+const PEOPLE = {
+  RomaFam:{color:"var(--p-roma)",init:"R"},
+  PrashantFam:{color:"var(--p-pfam)",init:"प"},
+};
+const OWNER_COLOR={ROMAFAM:"var(--p-roma)",PRASHANTFAM:"var(--p-pfam)",ALL:"var(--p-all)"};
+
+const T={
+ en:{kicker:"A MEETING OF TWO HOMES",sub:"Nashik · Bharatpur · November",iam:"I am …",
+  t_planner:"Planner",t_decisions:"Decisions",t_vendors:"Vendors",t_tracker:"Tracker",t_budget:"Budget",
+  totalPlanned:"Total planned",whoTitle:"Who's planning?",whoSub:"Pick your name so your votes and ticks show for everyone. No sign-up.",
+  addTodo:"Add a to-do…",bCat:"Category",bAmt:"₹ planned",voteBtn:"vote",voted:"✓ voted",votes:"votes",vote1:"vote",
+  vWait:"waiting",vReplied:"replied",vBooked:"booked",
+  decBanner:"Tap your choice to vote. Everyone sees the tally live. Change your mind anytime.",
+  venBanner:"Tap a status to cycle: waiting → replied → booked.",
+  todoEmpty:"No to-dos yet. Add the first one above.",budgetEmpty:"No budget lines yet.",
+  people:{RomaFam:"Roma Family",PrashantFam:"Prashant Family"}},
+ hi:{kicker:"दो घरों का मिलन",sub:"नासिक · भरतपुर · नवंबर",iam:"मैं हूँ …",
+  t_planner:"योजना",t_decisions:"फ़ैसले",t_vendors:"वेंडर",t_tracker:"ट्रैकर",t_budget:"बजट",
+  totalPlanned:"कुल नियोजित",whoTitle:"कौन योजना बना रहा है?",whoSub:"अपना नाम चुनें ताकि आपके वोट और टिक सबको दिखें. कोई साइन-अप नहीं.",
+  addTodo:"एक काम जोड़ें…",bCat:"श्रेणी",bAmt:"₹ नियोजित",voteBtn:"वोट",voted:"✓ वोट दिया",votes:"वोट",vote1:"वोट",
+  vWait:"प्रतीक्षा",vReplied:"जवाब आया",vBooked:"बुक हुआ",
+  decBanner:"वोट देने के लिए अपना विकल्प चुनें. सबको गिनती लाइव दिखती है. कभी भी बदल सकते हैं.",
+  venBanner:"स्थिति बदलने के लिए टैप करें: प्रतीक्षा → जवाब आया → बुक हुआ.",
+  todoEmpty:"अभी कोई काम नहीं. ऊपर पहला जोड़ें.",budgetEmpty:"अभी कोई बजट लाइन नहीं.",
+  people:{RomaFam:"रोमा परिवार",PrashantFam:"प्रशांत परिवार"}},
+ mr:{kicker:"दोन घरांचं मिलन",sub:"नाशिक · भरतपूर · नोव्हेंबर",iam:"मी आहे …",
+  t_planner:"नियोजन",t_decisions:"निर्णय",t_vendors:"वेंडर",t_tracker:"ट्रॅकर",t_budget:"बजेट",
+  totalPlanned:"एकूण नियोजित",whoTitle:"कोण नियोजन करतंय?",whoSub:"तुमचं नाव निवडा म्हणजे तुमचे मतं व टिक सर्वांना दिसतील. साइन-अप नाही.",
+  addTodo:"एक काम जोडा…",bCat:"प्रकार",bAmt:"₹ नियोजित",voteBtn:"मत द्या",voted:"✓ मत दिलं",votes:"मतं",vote1:"मत",
+  vWait:"प्रतीक्षा",vReplied:"उत्तर आलं",vBooked:"बुक झालं",
+  decBanner:"मत देण्यासाठी तुमचा पर्याय निवडा. सर्वांना मोजणी लाइव्ह दिसते. कधीही बदला.",
+  venBanner:"स्थिती बदलण्यासाठी टॅप करा: प्रतीक्षा → उत्तर आलं → बुक झालं.",
+  todoEmpty:"अजून काही काम नाही. वर पहिलं जोडा.",budgetEmpty:"अजून बजेट ओळी नाहीत.",
+  people:{RomaFam:"रोमा कुटुंब",PrashantFam:"प्रशांत कुटुंब"}},
+};
+
+const MONTHS={
+ en:[{m:"June – July",tag:"LOCK THE BIG DECISIONS",items:[["Confirm wedding + reception dates","ALL"],["Agree rough guest count","ALL"],["Set total budget + split it","ALL"],["Book Shama's flights from Sweden","ROMAFAM"],["Start shared guest list","ROMAFAM"]]},
+  {m:"August",tag:"VENUE · CATERING · PLANNER",items:[["Shortlist 3 Nashik venues","ROMAFAM"],["Get written quotes","ROMAFAM"],["Book wedding venue + deposit","ALL"],["Shortlist + book caterer","ROMAFAM"],["Confirm Bharatpur reception with groom's side","PRASHANTFAM"]]},
+  {m:"September",tag:"DECOR · INVITES · SHOPPING",items:[["Book decorator + palette","ALL"],["Design + order invites","ROMAFAM"],["Make WhatsApp digital invite","ROMAFAM"],["Buy bride's main outfit + alter","ROMAFAM"],["Buy jewellery + accessories","ROMAFAM"],["Buy return gifts (Tulshibaug)","ROMAFAM"]]},
+  {m:"October",tag:"BRIDE PREP · CONFIRM ALL",items:[["Book + trial makeup artist","ROMAFAM"],["Start monthly facials","ROMAFAM"],["Book mehndi + hair","ROMAFAM"],["Re-confirm every vendor","ROMAFAM"],["Confirm photographer","ALL"]]},
+  {m:"November",tag:"SEND · FINAL · ENJOY",items:[["Send WhatsApp invites","ROMAFAM"],["Give final headcount","ROMAFAM"],["Collect altered outfits","ROMAFAM"],["Pack bridal day-of kit","ROMAFAM"],["Assign calm day-of point person","ALL"],["Breathe. Enjoy it.","ALL"]]}],
+ hi:[{m:"जून – जुलाई",tag:"बड़े फ़ैसले पक्के करें",items:[["शादी + रिसेप्शन की तारीख़ें तय करें","ALL"],["मेहमानों की मोटी संख्या तय करें","ALL"],["कुल बजट तय करें + बाँटें","ALL"],["शमा की स्वीडन से फ़्लाइट बुक करें","ROMAFAM"],["साझा मेहमान सूची शुरू करें","ROMAFAM"]]},
+  {m:"अगस्त",tag:"वेन्यू · कैटरिंग · प्लानर",items:[["नासिक में 3 वेन्यू छाँटें","ROMAFAM"],["लिखित कोटेशन लें","ROMAFAM"],["शादी का वेन्यू बुक करें + अग्रिम","ALL"],["कैटरर छाँटें + बुक करें","ROMAFAM"],["भरतपुर रिसेप्शन दूल्हे पक्ष से तय करें","PRASHANTFAM"]]},
+  {m:"सितंबर",tag:"सजावट · निमंत्रण · ख़रीदारी",items:[["डेकोरेटर + रंग बुक करें","ALL"],["निमंत्रण डिज़ाइन + ऑर्डर करें","ROMAFAM"],["व्हाट्सएप डिजिटल निमंत्रण बनाएँ","ROMAFAM"],["दुल्हन का मुख्य पोशाक + अल्टरेशन","ROMAFAM"],["गहने + एक्सेसरीज़ ख़रीदें","ROMAFAM"],["रिटर्न गिफ़्ट (तुलशीबाग)","ROMAFAM"]]},
+  {m:"अक्टूबर",tag:"दुल्हन की तैयारी · सब पक्का करें",items:[["मेकअप आर्टिस्ट बुक + ट्रायल","ROMAFAM"],["मासिक फ़ेशियल शुरू करें","ROMAFAM"],["मेहंदी + हेयर बुक करें","ROMAFAM"],["हर वेंडर दोबारा पक्का करें","ROMAFAM"],["फ़ोटोग्राफ़र पक्का करें","ALL"]]},
+  {m:"नवंबर",tag:"भेजें · अंतिम · आनंद लें",items:[["व्हाट्सएप निमंत्रण भेजें","ROMAFAM"],["अंतिम संख्या दें","ROMAFAM"],["अल्टर किए कपड़े लें","ROMAFAM"],["दुल्हन की दिन-भर किट पैक करें","ROMAFAM"],["शांत दिन-प्रभारी नियुक्त करें","ALL"],["साँस लें. आनंद लें.","ALL"]]}],
+ mr:[{m:"जून – जुलै",tag:"मोठे निर्णय पक्के करा",items:[["लग्न + रिसेप्शनच्या तारखा ठरवा","ALL"],["पाहुण्यांची ढोबळ संख्या ठरवा","ALL"],["एकूण बजेट ठरवा + वाटा","ALL"],["शमाचं स्वीडनहून विमान बुक करा","ROMAFAM"],["सामायिक पाहुणे यादी सुरू करा","ROMAFAM"]]},
+  {m:"ऑगस्ट",tag:"हॉल · केटरिंग · प्लॅनर",items:[["नाशिकमध्ये ३ हॉल निवडा","ROMAFAM"],["लेखी कोटेशन घ्या","ROMAFAM"],["लग्नाचा हॉल बुक करा + अनामत","ALL"],["केटरर निवडा + बुक करा","ROMAFAM"],["भरतपूर रिसेप्शन नवरदेवाकडून ठरवा","PRASHANTFAM"]]},
+  {m:"सप्टेंबर",tag:"सजावट · पत्रिका · खरेदी",items:[["डेकोरेटर + रंगसंगती बुक करा","ALL"],["पत्रिका डिझाइन + ऑर्डर करा","ROMAFAM"],["व्हॉट्सअ‍ॅप डिजिटल पत्रिका बनवा","ROMAFAM"],["नवरीचा मुख्य पोशाख + अल्टरेशन","ROMAFAM"],["दागिने + अ‍ॅक्सेसरीज घ्या","ROMAFAM"],["रिटर्न गिफ्ट (तुळशीबाग)","ROMAFAM"]]},
+  {m:"ऑक्टोबर",tag:"नवरीची तयारी · सर्व पक्कं करा",items:[["मेकअप आर्टिस्ट बुक + ट्रायल","ROMAFAM"],["मासिक फेशियल सुरू करा","ROMAFAM"],["मेहंदी + केस बुक करा","ROMAFAM"],["प्रत्येक वेंडर पुन्हा पक्का करा","ROMAFAM"],["फोटोग्राफर पक्का करा","ALL"]]},
+  {m:"नोव्हेंबर",tag:"पाठवा · अंतिम · आनंद घ्या",items:[["व्हॉट्सअ‍ॅप पत्रिका पाठवा","ROMAFAM"],["अंतिम संख्या द्या","ROMAFAM"],["अल्टर केलेले कपडे आणा","ROMAFAM"],["नवरीची दिवसभराची बॅग भरा","ROMAFAM"],["शांत दिवस-प्रभारी नेमा","ALL"],["श्वास घ्या. आनंद घ्या.","ALL"]]}],
+};
+const DECISIONS={
+ en:[{id:"format",q:"Court marriage, or traditional ceremony?",opts:["Court marriage (simple, quick)","Traditional ceremony","Middle path: court + receptions"]},{id:"pune",q:"Is Pune in the picture?",opts:["Yes — a Pune reception too","No — keep it a shopping trip"]},{id:"venue",q:"Leading Nashik venue?",opts:["Racca Lawns (Kintu)","From Vedant's contacts","Still deciding"]}],
+ hi:[{id:"format",q:"कोर्ट मैरिज, या पारंपरिक विवाह?",opts:["कोर्ट मैरिज (सरल, जल्दी)","पारंपरिक विवाह","बीच का रास्ता: कोर्ट + रिसेप्शन"]},{id:"pune",q:"क्या पुणे तस्वीर में है?",opts:["हाँ — पुणे रिसेप्शन भी","नहीं — बस ख़रीदारी यात्रा"]},{id:"venue",q:"नासिक का प्रमुख वेन्यू?",opts:["राक्का लॉन्स (किंटू)","वेदांत के संपर्कों से","अभी तय करना है"]}],
+ mr:[{id:"format",q:"कोर्ट मॅरेज, की पारंपरिक विधी?",opts:["कोर्ट मॅरेज (साधं, झटपट)","पारंपरिक विधी","मधला मार्ग: कोर्ट + रिसेप्शन"]},{id:"pune",q:"पुणे चित्रात आहे का?",opts:["हो — पुणे रिसेप्शनही","नाही — फक्त खरेदी फेरी"]},{id:"venue",q:"नाशिकचा आघाडीचा हॉल?",opts:["राक्का लॉन्स (किंटू)","वेदांतच्या संपर्कांतून","अजून ठरवायचंय"]}],
+};
+const VENDORS={
+ en:[["K","Kintu Racca","Racca Lawns — direct venue ask"],["V","Vedant Rathi","Lawns, venues + vendor network"],["O","Ojashree Sarda","Decor + architect contacts"],["A","Aniket Mahajan","Well-connected, wide net"]],
+ hi:[["K","किंटू राक्का","राक्का लॉन्स — सीधा वेन्यू अनुरोध"],["V","वेदांत राठी","लॉन्स, वेन्यू + वेंडर नेटवर्क"],["O","ओजश्री सारडा","सजावट + आर्किटेक्ट संपर्क"],["A","अनिकेत महाजन","ख़ूब जुड़े हुए, विस्तृत नेटवर्क"]],
+ mr:[["K","किंटू राक्का","राक्का लॉन्स — थेट हॉल विनंती"],["V","वेदांत राठी","लॉन्स, हॉल + वेंडर नेटवर्क"],["O","ओजश्री सारडा","सजावट + आर्किटेक्ट संपर्क"],["A","अनिकेत महाजन","उत्तम जोडलेले, मोठं नेटवर्क"]],
+};
+
+let lang=localStorage.getItem('wp_lang')||'en';
+let me=localStorage.getItem('wp_me')||null;
+let sb=null,online=false;
+let STATE=JSON.parse(localStorage.getItem('wp_state')||'{}');
+STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[];
+function saveLocal(){ localStorage.setItem('wp_state',JSON.stringify(STATE)); }
+
+function ownerPill(o){ const color=OWNER_COLOR[o]||"var(--p-all)"; const map={ROMAFAM:"RomaFam",PRASHANTFAM:"PrashantFam",ALL:"ALL"};
+  let label=o==="ALL"?"ALL":(T[lang].people[map[o]]||map[o]);
+  return `<span class="owner" style="background:${color}22;color:${color}">${label}</span>`; }
+
+function renderPlanner(){ const M=MONTHS[lang]; let h="";
+  M.forEach((mo,mi)=>{ h+=`<div class="month"><h2 class="serif">${mo.m}</h2><div class="tag">${mo.tag}</div></div><div class="card">`;
+    mo.items.forEach((it,ii)=>{ const key=`${mi}-${ii}`,done=STATE.checks[key];
+      h+=`<div class="item ${done?'done':''}" onclick="toggleCheck('${key}')"><div class="box"></div><div class="txt">${it[0]}</div>${ownerPill(it[1])}</div>`;});
+    h+=`</div>`; });
+  document.getElementById('planner').innerHTML=h; }
+
+function vdot(name){ const p=PEOPLE[name]; if(!p)return''; return `<span class="vdot" style="background:${p.color}" title="${name}">${p.init}</span>`; }
+
+function renderDecisions(){ const D=DECISIONS[lang]; let h=`<div class="banner">${T[lang].decBanner}</div>`;
+  D.forEach(d=>{ const votes=STATE.votes[d.id]||{}; const counts=d.opts.map((_,i)=>Object.values(votes).filter(v=>v===i).length); const total=Object.keys(votes).length;
+    h+=`<div class="decision"><div class="q serif">${d.q}</div>`;
+    d.opts.forEach((o,i)=>{ const mine=me&&votes[me]===i; const pct=total?Math.round(counts[i]/total*100):0;
+      const voters=Object.keys(votes).filter(n=>votes[n]===i).map(vdot).join('');
+      h+=`<div class="opt ${mine?'voted':''}"><div class="top"><div class="label">${o}</div><button class="votebtn" onclick="castVote('${d.id}',${i})">${mine?T[lang].voted:T[lang].voteBtn}</button></div><div class="bar"><i style="width:${pct}%"></i></div><div class="tally"><span>${counts[i]} ${counts[i]!==1?T[lang].votes:T[lang].vote1} · ${pct}%</span><span class="voters">${voters}</span></div></div>`; });
+    h+=`</div>`; });
+  document.getElementById('decisions').innerHTML=h; }
+
+function renderVendors(){ const V=VENDORS[lang]; let h=`<div class="banner">${T[lang].venBanner}</div><div class="card">`;
+  V.forEach((v,i)=>{ const st=STATE.vendors[i]||'wait'; const lbl={wait:T[lang].vWait,replied:T[lang].vReplied,booked:T[lang].vBooked}[st]; const cls={wait:'s-wait',replied:'s-replied',booked:'s-booked'}[st];
+    h+=`<div class="vendor"><div class="vavatar" style="background:linear-gradient(135deg,var(--teal),var(--rust))">${v[0]}</div><div class="vinfo"><div class="vn">${v[1]}</div><div class="vr">${v[2]}</div></div><button class="vstatus ${cls}" onclick="cycleVendor(${i})">${lbl}</button></div>`; });
+  h+=`</div>`; document.getElementById('vendors').innerHTML=h; }
+
+function renderTodos(){ const l=document.getElementById('todoList');
+  if(!STATE.todos.length){ l.innerHTML=`<div class="empty">${T[lang].todoEmpty}</div>`; return;}
+  l.innerHTML=`<div class="card">`+STATE.todos.map((t,i)=>{ const color=t.by&&PEOPLE[t.by]?PEOPLE[t.by].color:"var(--p-all)"; const lab=t.by?(T[lang].people[t.by]||t.by).split(' · ')[0]:'';
+    return `<div class="item ${t.done?'done':''}" onclick="toggleTodo(${i})"><div class="box"></div><div class="txt">${t.text}</div>${t.by?`<span class="owner" style="background:${color}22;color:${color}">${lab}</span>`:''}</div>`;}).join('')+`</div>`; }
+
+function renderBudget(){ const l=document.getElementById('budgetList'); let total=0;
+  l.innerHTML=STATE.budget.length?STATE.budget.map((b,i)=>{ total+=Number(b.amt)||0; return `<div class="brow"><div class="bcat">${b.cat}</div><div class="bamt">₹${Number(b.amt).toLocaleString('en-IN')}</div><button class="vstatus s-wait" onclick="delBudget(${i})">✕</button></div>`;}).join(''):`<div class="empty">${T[lang].budgetEmpty}</div>`;
+  document.getElementById('bTotal').textContent='₹'+total.toLocaleString('en-IN'); }
+
+function renderAll(){ renderPlanner();renderDecisions();renderVendors();renderTodos();renderBudget(); }
+
+function applyLang(){ document.body.className='lang-'+lang;
+  document.querySelectorAll('[data-t]').forEach(el=>{ const k=el.getAttribute('data-t'); if(T[lang][k])el.textContent=T[lang][k]; });
+  document.querySelectorAll('.lang-switch button').forEach(b=>b.classList.toggle('on',b.dataset.l===lang));
+  document.getElementById('newTodo').placeholder=T[lang].addTodo; document.getElementById('bCat').placeholder=T[lang].bCat; document.getElementById('bAmt').placeholder=T[lang].bAmt;
+  document.getElementById('whoBtn').textContent=me?(T[lang].iam.replace('…','').trim()+' '+(T[lang].people[me]||me).split(' · ')[0]):T[lang].iam;
+  buildWhoGrid(); renderAll(); }
+function setLang(l){ lang=l; localStorage.setItem('wp_lang',l); applyLang(); }
+
+function buildWhoGrid(){ const g=document.getElementById('whoGrid');
+  g.innerHTML=Object.keys(PEOPLE).map(k=>{ const p=PEOPLE[k]; const label=T[lang].people[k]||k;
+    return `<button onclick="setMe('${k}')"><span class="swatch" style="background:${p.color}"></span>${label}</button>`;}).join(''); }
+
+function toggleCheck(k){ STATE.checks[k]=!STATE.checks[k]; commit(); renderPlanner(); }
+function castVote(id,i){ if(!me){openWho();return;} STATE.votes[id]=STATE.votes[id]||{}; STATE.votes[id][me]=i; commit(); renderDecisions(); }
+function cycleVendor(i){ const o={wait:'replied',replied:'booked',booked:'wait'}; STATE.vendors[i]=o[STATE.vendors[i]||'wait']; commit(); renderVendors(); }
+function addTodo(){ const el=document.getElementById('newTodo'),t=el.value.trim(); if(!t)return; STATE.todos.push({text:t,done:false,by:me||''}); el.value=''; commit(); renderTodos(); }
+function toggleTodo(i){ STATE.todos[i].done=!STATE.todos[i].done; commit(); renderTodos(); }
+function addBudget(){ const c=document.getElementById('bCat'),a=document.getElementById('bAmt'); if(!c.value.trim())return; STATE.budget.push({cat:c.value.trim(),amt:a.value.replace(/[^0-9]/g,'')||0}); c.value='';a.value=''; commit(); renderBudget(); }
+function delBudget(i){ STATE.budget.splice(i,1); commit(); renderBudget(); }
+
+function show(id,btn){ document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active')); document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); window.scrollTo({top:0,behavior:'smooth'}); }
+function openWho(){ document.getElementById('whoModal').classList.remove('hide'); }
+function setMe(n){ me=n; localStorage.setItem('wp_me',n);
+  document.getElementById('whoBtn').textContent=T[lang].iam.replace('…','').trim()+' '+(T[lang].people[n]||n).split(' · ')[0];
+  document.getElementById('whoModal').classList.add('hide'); renderDecisions(); renderTodos(); }
+
+async function commit(){ saveLocal(); if(!online)return;
+  try{ await sb.from('wedding').upsert({code:WEDDING_CODE,data:STATE,updated:new Date().toISOString()}); }catch(e){ console.warn('push fail',e); } }
+async function initCloud(){ const dot=document.getElementById('syncDot'),txt=document.getElementById('syncTxt');
+  try{ sb=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
+    const {data}=await sb.from('wedding').select('data').eq('code',WEDDING_CODE).maybeSingle();
+    if(data&&data.data){ STATE=data.data; STATE.checks=STATE.checks||{};STATE.votes=STATE.votes||{};STATE.vendors=STATE.vendors||{};STATE.todos=STATE.todos||[];STATE.budget=STATE.budget||[]; saveLocal(); renderAll(); }
+    else { await sb.from('wedding').upsert({code:WEDDING_CODE,data:STATE,updated:new Date().toISOString()}); }
+    online=true; dot.className='dot on'; txt.textContent='live · synced';
+    sb.channel('wp').on('postgres_changes',{event:'*',schema:'public',table:'wedding',filter:`code=eq.${WEDDING_CODE}`},p=>{ if(p.new&&p.new.data){ STATE=p.new.data; saveLocal(); renderAll(); }}).subscribe();
+  }catch(e){ online=false; dot.className='dot off'; txt.textContent='offline · saved on phone'; console.warn('cloud fail',e); } }
+
+buildWhoGrid(); applyLang(); if(!me) openWho(); initCloud();
+document.getElementById('newTodo').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo();});
+</script>
+</body>
+</html>
