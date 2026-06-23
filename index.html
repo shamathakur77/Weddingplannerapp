@@ -9,24 +9,48 @@
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
 :root{
-  --bg1:#1b2a2e; --bg2:#241a16; --ink:#f0e6d2; --gold:#d4a843; --gold-soft:rgba(212,168,67,.25);
-  --rust:#d98c5f; --teal:#5fa89c; --muted:#8a9590; --line:rgba(212,168,67,.22); --card:rgba(255,250,235,.055);
-  --p-shama:#5fa89c; --p-roma:#5fa89c; --p-mom:#d4a843; --p-prashant:#c77dff; --p-pfam:#d98c5f; --p-all:#c8ae5c;
+  --gold:#e0a030; --gold-soft:rgba(224,160,48,.25); --gold-bright:#e8c869;
+  --ink:#f4e8cf; --rust:#e8a55f; --teal:#5fa89c; --muted:#9a8a70;
+  --line:rgba(224,160,48,.24); --card:rgba(255,250,235,.065);
+  --p-roma:#5fa89c; --p-pfam:#e8a55f; --p-all:#e8c869;
+  --p-shama:#5fa89c; --p-mom:#d4a843; --p-prashant:#c77dff;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
 html,body{margin:0;padding:0;}
 body{ font-family:'DM Mono',monospace; color:var(--ink);
-  background:linear-gradient(165deg,var(--bg1),var(--bg2) 70%); background-attachment:fixed; min-height:100vh; padding-bottom:80px;}
+  background:linear-gradient(118deg,#3a1f1a 0%,#5a2e1e 34%,#3a3b2e 58%,#1e3329 100%);
+  background-attachment:fixed; min-height:100vh; padding-bottom:80px; position:relative; overflow-x:hidden;}
+@media (prefers-reduced-motion: reduce){ *{animation:none !important;} }
+
+/* ambient marigold petals */
+.petal-layer{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden;}
+.petal{ position:absolute; top:-16px; opacity:0; animation:fall linear infinite;}
+@keyframes fall{ 0%{transform:translateY(-16px) rotate(0);opacity:0;} 10%{opacity:.7;} 90%{opacity:.55;} 100%{transform:translateY(102vh) rotate(340deg);opacity:0;} }
+
+/* side culture frames */
+.frameL,.frameR{ position:fixed; top:60px; bottom:0; width:22px; z-index:0; opacity:.5; pointer-events:none;}
+.frameL{ left:0;} .frameR{ right:0;}
+.frameL svg,.frameR svg{ width:100%; height:100%;}
+.draw path,.draw line,.draw circle{ stroke-dasharray:240; stroke-dashoffset:240; animation:draw 2.4s ease forwards;}
+@keyframes draw{ to{stroke-dashoffset:0;} }
+main, header, nav{ position:relative; z-index:2;}
 body.lang-hi, body.lang-mr{ font-family:'Noto Sans Devanagari',sans-serif;}
 .serif{ font-family:'Cormorant Garamond',serif;} .disp{ font-family:'Fraunces',serif;}
 body.lang-hi .serif,body.lang-mr .serif,body.lang-hi .disp,body.lang-mr .disp{ font-family:'Noto Serif Devanagari',serif;}
-header{ text-align:center; padding:18px 16px 14px; position:relative;}
-header::after{ content:"✦  ✦  ✦"; position:absolute; bottom:5px; left:0; right:0; font-size:7px; color:var(--gold); letter-spacing:8px; opacity:.5;}
-.kicker{ font-size:9px; letter-spacing:3px; color:var(--gold);}
-h1{ font-family:'Fraunces',serif; font-weight:700; font-size:29px; margin:3px 0 1px; line-height:1.1; color:#f4ecd8;}
+header{ text-align:center; padding:42px 16px 14px; position:relative;}
+.toran{ position:absolute; top:0; left:0; right:0; height:34px; z-index:1; transform-origin:top center; animation:sway 4.5s ease-in-out infinite;}
+@keyframes sway{ 0%,100%{transform:rotate(-.6deg);} 50%{transform:rotate(.6deg);} }
+.toran svg{ width:100%; height:100%; display:block;}
+.diya-glow{ position:absolute; top:30px; left:50%; transform:translateX(-50%); width:230px; height:120px; border-radius:50%;
+  background:radial-gradient(circle,rgba(224,160,48,.4),transparent 70%); filter:blur(30px); z-index:0; animation:pulse 3.6s ease-in-out infinite;}
+@keyframes pulse{ 0%,100%{opacity:.5;transform:translateX(-50%) scale(1);} 50%{opacity:.85;transform:translateX(-50%) scale(1.08);} }
+header > *:not(.toran):not(.diya-glow){ position:relative; z-index:2;}
+header::after{ content:"✦  ✦  ✦"; position:absolute; bottom:5px; left:0; right:0; font-size:7px; color:var(--gold); letter-spacing:8px; opacity:.5; z-index:2;}
+.kicker{ font-size:9px; letter-spacing:3px; color:var(--gold-bright);}
+h1{ font-family:'Fraunces',serif; font-weight:700; font-size:30px; margin:3px 0 1px; line-height:1.1; color:#f4e8cf; text-shadow:0 2px 12px rgba(224,160,48,.2);}
 body.lang-hi h1,body.lang-mr h1{ font-family:'Noto Serif Devanagari',serif;}
 h1 .amp{ color:var(--gold); font-style:italic;}
-.sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px; color:#bfa86a;}
+.sub{ font-family:'Cormorant Garamond',serif; font-style:italic; font-size:14px; color:#cBae7a;}
 body.lang-hi .sub,body.lang-mr .sub{ font-family:'Noto Serif Devanagari',serif; font-style:normal;}
 .controls{ display:flex; gap:8px; justify-content:center; align-items:center; margin-top:10px; flex-wrap:wrap;}
 .lang-switch{ display:inline-flex; gap:3px; background:rgba(0,0,0,.2); border-radius:14px; padding:3px;}
@@ -38,8 +62,8 @@ body.lang-hi .sub,body.lang-mr .sub{ font-family:'Noto Serif Devanagari',serif; 
 .dot.on{ background:var(--teal); box-shadow:0 0 0 3px rgba(95,168,156,.2);}
 .dot.off{ background:var(--rust);}
 main{ padding:6px 14px 20px; max-width:560px; margin:0 auto;}
-.panel{ display:none;} .panel.active{ display:block; animation:fade .25s;}
-@keyframes fade{from{opacity:0;transform:translateY(5px);}to{opacity:1;transform:none;}}
+.panel{ display:none;} .panel.active{ display:block; animation:leafturn .4s cubic-bezier(.2,.7,.3,1);}
+@keyframes leafturn{ 0%{opacity:0;transform:perspective(800px) rotateY(8deg) translateY(8px);} 100%{opacity:1;transform:none;} }
 .month{ margin:17px 0 6px; padding-left:2px;}
 .month h2{ font-family:'Cormorant Garamond',serif; color:var(--rust); font-size:22px; margin:0; font-weight:700;}
 body.lang-hi .month h2,body.lang-mr .month h2{ font-family:'Noto Serif Devanagari',serif;}
@@ -102,7 +126,12 @@ body.lang-hi .who button,body.lang-mr .who button{ font-family:'Noto Serif Devan
 </style>
 </head>
 <body class="lang-en">
+<div class="petal-layer" id="petalLayer"></div>
+<div class="frameL" id="frameL"></div>
+<div class="frameR" id="frameR"></div>
 <header>
+  <div class="toran" id="toran"></div>
+  <div class="diya-glow"></div>
   <div class="kicker" data-t="kicker">A MEETING OF TWO HOMES</div>
   <h1 class="disp">Roma <span class="amp">&amp;</span> Prashant</h1>
   <div class="sub" data-t="sub">Nashik · Bharatpur · November</div>
@@ -295,6 +324,41 @@ async function initCloud(){ const dot=document.getElementById('syncDot'),txt=doc
     sb.channel('wp').on('postgres_changes',{event:'*',schema:'public',table:'wedding',filter:`code=eq.${WEDDING_CODE}`},p=>{ if(p.new&&p.new.data){ STATE=p.new.data; saveLocal(); renderAll(); }}).subscribe();
   }catch(e){ online=false; dot.className='dot off'; txt.textContent='offline · saved on phone'; console.warn('cloud fail',e); } }
 
+/* ---- cultural animation builders ---- */
+function buildToran(){
+  let s=`<svg viewBox="0 0 400 34" preserveAspectRatio="none"><path d="M0 5 Q200 28 400 5" stroke="var(--gold)" stroke-width="1.5" fill="none"/>`;
+  for(let x=14;x<400;x+=20){
+    const dip=5+23*Math.sin((x/400)*Math.PI);
+    s+=`<circle cx="${x}" cy="${dip+6}" r="2.3" fill="var(--rust)"/>`;
+    s+=`<path d="M${x} ${dip+8} q-3 8 0 13 q3 -5 0 -13" fill="var(--p-roma)" opacity=".7"/>`;
+  }
+  document.getElementById('toran').innerHTML=s+`</svg>`;
+}
+function buildPetals(){
+  const cols=['#e0a030','#e8a55f','#c8ae5c','#5fa89c'];
+  let h='';
+  for(let i=0;i<14;i++){
+    const x=Math.random()*98, dur=8+Math.random()*7, del=-Math.random()*10, sz=5+Math.random()*5, c=cols[i%cols.length];
+    h+=`<div class="petal" style="left:${x}vw;animation-duration:${dur}s;animation-delay:${del}s;">
+      <svg width="${sz*2}" height="${sz*2}" viewBox="0 0 12 12"><path d="M6 1 Q10 5 6 11 Q2 5 6 1" fill="${c}" opacity=".8"/></svg></div>`;
+  }
+  document.getElementById('petalLayer').innerHTML=h;
+}
+function buildFrames(){
+  // Warli (left, Maharashtra)
+  const warli=`<svg viewBox="0 0 22 600" preserveAspectRatio="none" class="draw"><g stroke="var(--p-roma)" stroke-width="1.3" fill="none">
+    ${[50,150,360,470,560].map(y=>`<g transform="translate(11,${y})"><circle r="3"/><line x1="0" y1="3" x2="0" y2="12"/><line x1="0" y1="6" x2="-5" y2="10"/><line x1="0" y1="6" x2="5" y2="10"/><line x1="0" y1="12" x2="-4" y2="19"/><line x1="0" y1="12" x2="4" y2="19"/></g>`).join('')}
+    <g transform="translate(11,255)"><circle r="5"/><line x1="0" y1="-9" x2="0" y2="-6"/><line x1="0" y1="9" x2="0" y2="6"/><line x1="-9" y1="0" x2="-6" y2="0"/><line x1="9" y1="0" x2="6" y2="0"/></g></g></svg>`;
+  // Jharokha + lotus + mandana (right, Rajasthan)
+  const jhar=`<svg viewBox="0 0 22 600" preserveAspectRatio="none" class="draw"><g stroke="var(--p-pfam)" stroke-width="1.2" fill="none">
+    ${[60,230,400,540].map(y=>`<g transform="translate(11,${y})"><path d="M-8 16 V4 a8 8 0 0 1 16 0 V16"/><path d="M-4 16 V7 a4 4 0 0 1 8 0 V16"/></g>`).join('')}
+    <g transform="translate(11,145)"><circle r="7"/><path d="M0 -7 Q3 -3 0 0 Q-3 -3 0 -7"/><path d="M0 7 Q3 3 0 0 Q-3 3 0 7"/></g>
+    <g transform="translate(11,320)"><path d="M0 -8 L6 0 L0 8 L-6 0 Z"/></g></g></svg>`;
+  document.getElementById('frameL').innerHTML=warli;
+  document.getElementById('frameR').innerHTML=jhar;
+}
+
+buildToran(); buildPetals(); buildFrames();
 buildWhoGrid(); applyLang(); if(!me) openWho(); initCloud();
 document.getElementById('newTodo').addEventListener('keydown',e=>{if(e.key==='Enter')addTodo();});
 </script>
