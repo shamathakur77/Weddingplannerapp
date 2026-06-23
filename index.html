@@ -147,6 +147,10 @@ nav button svg{ width:18px;height:18px; stroke:currentColor;}
 .wtext{ font-family:'Cormorant Garamond',serif; font-size:15px; font-style:italic; color:var(--ink); line-height:1.4;}
 body.lang-hi .wtext,body.lang-mr .wtext{ font-family:'Noto Serif Devanagari',serif; font-style:normal;}
 .wby{ font-size:10px; margin-top:5px; text-align:right;}
+.wreact-row{display:flex;gap:6px;justify-content:flex-end;margin-top:8px;}
+.wreact-pill{display:inline-flex;align-items:center;gap:4px;height:28px;padding:0 10px;border-radius:14px;border:1px solid rgba(212,168,67,.25);background:none;font-family:inherit;font-size:12px;color:var(--muted);cursor:pointer;line-height:1;}
+.wreact-pill.active{background:rgba(224,160,48,.22);border-color:var(--gold);color:var(--gold-bright);}
+.wreact-pill .rcount{font-size:10px;}
 /* soul */
 .soul-intro{ text-align:center; padding:18px 6px;}
 .soul-em{ font-size:26px; color:var(--gold); margin-bottom:4px;}
@@ -440,11 +444,25 @@ function renderBudget(){ const l=document.getElementById('budgetList'); let tota
 function renderAll(){ renderPlanner();renderDecisions();renderVendors();renderTodos();renderBudget();renderWishes();renderSoul(); }
 
 /* ---- wishes wall ---- */
+const REACTIONS=['🌸','🙏','❤️'];
+function toggleReaction(wi,emoji){
+  if(!me){openWho();return;}
+  const w=STATE.wishes[wi];
+  if(!w.reactions)w.reactions={};
+  if(!w.reactions[emoji])w.reactions[emoji]=[];
+  const arr=w.reactions[emoji];
+  const idx=arr.indexOf(me);
+  if(idx>-1)arr.splice(idx,1); else arr.push(me);
+  commit();renderWishes();
+}
 function renderWishes(){ const l=document.getElementById('wishList'); if(!l)return;
   if(!STATE.wishes.length){ l.innerHTML=`<div class="empty">${T[lang].wishEmpty}</div>`; return;}
   l.innerHTML=STATE.wishes.map((w,i)=>{ const color=w.by&&PEOPLE[w.by]?PEOPLE[w.by].color:"var(--p-all)"; const lab=w.by?(T[lang].people[w.by]||w.by):'';
-    return `<div class="wish" style="border-left:3px solid ${color}"><div class="wtext">"${w.text}"</div><div class="wby" style="color:${color}">— ${lab}</div></div>`;}).join(''); }
-function addWish(){ const el=document.getElementById('newWish'),t=el.value.trim(); if(!t)return; STATE.wishes.unshift({text:t,by:me||''}); el.value=''; commit(); renderWishes(); }
+    const rx=w.reactions||{};
+    const pills=REACTIONS.map(e=>{ const voters=rx[e]||[]; const active=me&&voters.includes(me);
+      return `<button class="wreact-pill${active?' active':''}" onclick="toggleReaction(${i},'${e}')"><span>${e}</span><span class="rcount">${voters.length||''}</span></button>`;}).join('');
+    return `<div class="wish" style="border-left:3px solid ${color}"><div class="wtext">"${w.text}"</div><div class="wby" style="color:${color}">— ${lab}</div><div class="wreact-row">${pills}</div></div>`;}).join(''); }
+function addWish(){ const el=document.getElementById('newWish'),t=el.value.trim(); if(!t)return; STATE.wishes.unshift({text:t,by:me||'',reactions:{}}); el.value=''; commit(); renderWishes(); }
 
 /* ---- family split / venn (rendered into decisions top) ---- */
 function familySplitHTML(){
