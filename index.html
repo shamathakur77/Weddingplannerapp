@@ -110,6 +110,14 @@ body.lang-hi .decision .q,body.lang-mr .decision .q{ font-family:'Noto Serif Dev
 .s-wait{ background:rgba(212,168,67,.16); color:var(--gold);}
 .s-replied{ background:rgba(95,168,156,.18); color:var(--teal);}
 .s-booked{ background:var(--teal); color:var(--bg1); font-weight:600;}
+.vnotes-wrap{ overflow:hidden; max-height:0; transition:max-height .3s ease; width:100%; padding:0 2px; box-sizing:border-box;}
+.vnotes-wrap.open{ max-height:120px;}
+.vnotes-area{ width:100%; box-sizing:border-box; background:rgba(0,0,0,.2); border:1px solid var(--line); border-radius:8px; padding:8px 10px; font-family:inherit; font-size:11px; color:var(--ink); resize:none; height:72px; margin-top:7px;}
+.vnotes-area::placeholder{ color:var(--muted);}
+.vnotes-count{ font-size:9px; color:var(--muted); text-align:right; margin-top:2px;}
+.vnote-preview{ font-size:10px; color:var(--muted); font-style:italic; margin-top:2px;}
+.vnote-btn{ background:none; border:none; cursor:pointer; font-size:13px; padding:0 2px; line-height:1; opacity:.6;}
+.vnote-btn:hover{ opacity:1;}
 .addrow{ display:flex; gap:8px; margin-bottom:12px;}
 .addrow input{ flex:1; border:1px solid var(--line); border-radius:11px; padding:11px; font-family:inherit; font-size:13px; background:rgba(0,0,0,.2); color:var(--ink);}
 .addrow input::placeholder{ color:var(--muted);}
@@ -392,8 +400,32 @@ function renderDecisions(){ const D=DECISIONS[lang]; let h=familySplitHTML()+`<d
   document.getElementById('decisions').innerHTML=h; }
 
 function renderVendors(){ const V=VENDORS[lang]; let h=`<div class="banner">${T[lang].venBanner}</div><div class="card">`;
-  V.forEach((v,i)=>{ const st=STATE.vendors[i]||'wait'; const lbl={wait:T[lang].vWait,replied:T[lang].vReplied,booked:T[lang].vBooked}[st]; const cls={wait:'s-wait',replied:'s-replied',booked:'s-booked'}[st];
-    h+=`<div class="vendor"><div class="vavatar" style="background:linear-gradient(135deg,var(--teal),var(--rust))">${v[0]}</div><div class="vinfo"><div class="vn">${v[1]}</div><div class="vr">${v[2]}</div></div><button class="vstatus ${cls}" onclick="cycleVendor(${i})">${lbl}</button></div>`; });
+  V.forEach((v,i)=>{
+    const vd=STATE.vendors[i]||{};
+    const stStr=typeof vd==='string'?vd:vd.status||'wait';
+    const lbl={wait:T[lang].vWait,replied:T[lang].vReplied,booked:T[lang].vBooked}[stStr];
+    const cls={wait:'s-wait',replied:'s-replied',booked:'s-booked'}[stStr];
+    const note=(typeof vd==='object'&&vd.notes)||'';
+    const preview=note?note.slice(0,40)+(note.length>40?'…':''):'';
+    const previewHtml=note?`<div class="vnote-preview">${preview}</div>`:`<div class="vnote-preview">tap 📝 to add notes</div>`;
+    h+=`<div class="vendor" style="flex-wrap:wrap;">
+      <div class="vavatar" style="background:linear-gradient(135deg,var(--teal),var(--rust))">${v[0]}</div>
+      <div class="vinfo" style="min-width:0;">
+        <div class="vn">${v[1]} <button class="vnote-btn" onclick="toggleVnote(${i})" title="Notes">📝</button></div>
+        <div class="vr">${v[2]}</div>
+        <div id="vprev${i}">${previewHtml}</div>
+      </div>
+      <button class="vstatus ${cls}" onclick="cycleVendor(${i})">${lbl}</button>
+      <div class="vnotes-wrap" id="vnw${i}">
+        <textarea class="vnotes-area" id="vta${i}" maxlength="280"
+          placeholder="Notes…"
+          oninput="document.getElementById('vct${i}').textContent=(280-this.value.length)+' left'"
+          onblur="saveVendorNote(${i})"
+        >${note}</textarea>
+        <div class="vnotes-count" id="vct${i}">${280-note.length} left</div>
+      </div>
+    </div>`;
+  });
   h+=`</div>`; document.getElementById('vendors').innerHTML=h; }
 
 function renderTodos(){ const l=document.getElementById('todoList');
@@ -500,7 +532,29 @@ function toggleCheck(k){ const wasMonth=parseInt(k.split('-')[0]); const before=
   const after=monthProgress(wasMonth).pct;
   if(before<100 && after===100) celebrate(wasMonth); }
 function castVote(id,i){ if(!me){openWho();return;} STATE.votes[id]=STATE.votes[id]||{}; STATE.votes[id][me]=i; commit(); renderDecisions(); }
-function cycleVendor(i){ const o={wait:'replied',replied:'booked',booked:'wait'}; STATE.vendors[i]=o[STATE.vendors[i]||'wait']; commit(); renderVendors(); }
+function cycleVendor(i){
+  const o={wait:'replied',replied:'booked',booked:'wait'};
+  const cur=STATE.vendors[i];
+  const curStatus=typeof cur==='object'?cur.status||'wait':cur||'wait';
+  const curNotes=typeof cur==='object'?cur.notes||'':'';
+  STATE.vendors[i]={status:o[curStatus],notes:curNotes};
+  commit(); renderVendors();
+}
+function toggleVnote(i){
+  const w=document.getElementById('vnw'+i);
+  w.classList.toggle('open');
+  if(w.classList.contains('open')) document.getElementById('vta'+i).focus();
+}
+function saveVendorNote(i){
+  const val=document.getElementById('vta'+i).value.slice(0,280);
+  const cur=STATE.vendors[i];
+  const curStatus=typeof cur==='object'?cur.status||'wait':cur||'wait';
+  STATE.vendors[i]={status:curStatus,notes:val};
+  commit();
+  const prev=document.getElementById('vprev'+i);
+  if(val) prev.innerHTML=`<div class="vnote-preview">${val.slice(0,40)+(val.length>40?'…':'')}</div>`;
+  else prev.innerHTML=`<div class="vnote-preview">tap 📝 to add notes</div>`;
+}
 function addTodo(){ const el=document.getElementById('newTodo'),t=el.value.trim(); if(!t)return; STATE.todos.push({text:t,done:false,by:me||''}); el.value=''; commit(); renderTodos(); }
 function toggleTodo(i){ STATE.todos[i].done=!STATE.todos[i].done; commit(); renderTodos(); }
 function addBudget(){ const c=document.getElementById('bCat'),a=document.getElementById('bAmt'); if(!c.value.trim())return; STATE.budget.push({cat:c.value.trim(),amt:a.value.replace(/[^0-9]/g,'')||0}); c.value='';a.value=''; commit(); renderBudget(); }
